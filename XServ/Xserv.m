@@ -287,21 +287,24 @@ typedef enum XServOperationCode : NSInteger {
         return;
     }
    */
-    if([operation[@"op"] intValue] == UNBINDCODE) {
-        NSString *topic = operation[@"topic"];
-        NSString *event = operation[@"event"];
-        
-        for(NSDictionary *op in self.operations)
-        {
-            if([op[@"topic"] isEqualToString:topic] && [op[@"event"] isEqualToString:event]) {
-                [self.operations removeObject:op];
-                continue;
+    if([operation[@"rc"] intValue] == 1) {
+        if([operation[@"op"] intValue] == UNBINDCODE) {
+            NSString *topic = operation[@"topic"];
+            NSString *event = operation[@"event"];
+            
+            for(NSDictionary *op in self.operations)
+            {
+                if([op[@"topic"] isEqualToString:topic] && [op[@"event"] isEqualToString:event]) {
+                    [self.operations removeObject:op];
+                    continue;
+                }
             }
         }
+        else if([operation[@"op"] intValue] == BINDCODE) {
+            [self.operations addObject:operation];
+        }
     }
-    else if([operation[@"op"] intValue] == BINDCODE) {
-        [self.operations addObject:operation];
-    }
+     
     
     if ([self.delegate respondsToSelector:@selector(didReceiveOpsResponse:)]) {
         [self.delegate didReceiveOpsResponse:operation];

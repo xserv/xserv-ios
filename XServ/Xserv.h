@@ -8,6 +8,17 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum XservResultCode : NSInteger {
+    RC_OK = 1,
+    RC_GENERIC_ERROR = 0,
+    RC_ARGS_ERROR = -1,
+    RC_ALREADY_BINDED = -2,
+    RC_UNAUTHORIZED = -3,
+    RC_NO_EVENT = -4,
+    RC_NO_DATA = -5,
+    RC_NOT_PRIVATE = -6,
+} XservResultCode;
+
 @protocol XservDelegate <NSObject>
 
 - (void) didReceiveEvents:(id)message;

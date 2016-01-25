@@ -29,7 +29,7 @@ static NSString *kCellOperations = @"CellOperations";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	
+    
     self.xserv = [[Xserv alloc]initWithAppId:APP_ID];
     self.xserv.delegate = self;
     self.messages = [NSMutableArray new];
@@ -52,32 +52,17 @@ static NSString *kCellOperations = @"CellOperations";
 
 - (IBAction)onTapBind:(id)sender {
     
-    if(![self.textTopic.text isEqualToString:@""]) {
-        [self.xserv bindWithTopic:self.textTopic.text withEvent:self.textEvent.text];
-    }
-    else {
-        [[[UIAlertView alloc]initWithTitle:@"Info" message:@"Insert Topic" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
-    }
+    [self.xserv bindWithTopic:self.textTopic.text withEvent:self.textEvent.text];
 }
 
 - (IBAction)onTapUnBind:(id)sender {
     
-    if(![self.textTopic.text isEqualToString:@""]) {
-        [self.xserv unbindWithTopic:self.textTopic.text withEvent:self.textEvent.text];
-    }
-    else {
-        [[[UIAlertView alloc]initWithTitle:@"Info" message:@"Insert Topic" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
-    }
+    [self.xserv unbindWithTopic:self.textTopic.text withEvent:self.textEvent.text];
 }
 
 - (IBAction)onTapTrigger:(id)sender {
     
-    if(![self.textTopic.text isEqualToString:@""] && ![self.textEvent.text isEqualToString:@""] && ![self.textMessage.text isEqualToString:@""]) {
-        [self.xserv trigger:self.textMessage.text withTopic:self.textTopic.text withEvent:self.textEvent.text];
-    }
-    else {
-        [[[UIAlertView alloc]initWithTitle:@"Info" message:@"Insert Topic and Event and Message" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
-    }
+    [self.xserv trigger:self.textMessage.text withTopic:self.textTopic.text withEvent:self.textEvent.text];
 }
 
 - (IBAction)onTapHistoryById:(id)sender {
@@ -109,7 +94,7 @@ static NSString *kCellOperations = @"CellOperations";
 
 - (void) didOpenConnection {
     
-    NSLog(@"Connection opened");
+    NSLog(@"%s", __func__);
 }
 
 - (void) didCloseConnection:(NSError *)reason {
