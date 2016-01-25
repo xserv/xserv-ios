@@ -1,0 +1,339 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		EE029E3B1C558366007F25AC /* Xserv.h in Headers */ = {isa = PBXBuildFile; fileRef = EE029E391C558366007F25AC /* Xserv.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		EE029E3C1C558366007F25AC /* Xserv.m in Sources */ = {isa = PBXBuildFile; fileRef = EE029E3A1C558366007F25AC /* Xserv.m */; };
+		EE029E451C5583C6007F25AC /* SRWebSocket.h in Headers */ = {isa = PBXBuildFile; fileRef = EE029E431C5583C6007F25AC /* SRWebSocket.h */; };
+		EE029E461C5583C6007F25AC /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = EE029E441C5583C6007F25AC /* SRWebSocket.m */; };
+		EE029E481C5584A8007F25AC /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE029E471C5584A8007F25AC /* CFNetwork.framework */; };
+		EE029E4A1C5584B4007F25AC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE029E491C5584B4007F25AC /* Foundation.framework */; };
+		EE029E4C1C5584BF007F25AC /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE029E4B1C5584BF007F25AC /* Security.framework */; };
+		EE029E4E1C5586E8007F25AC /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = EE029E4D1C5586E8007F25AC /* libicucore.tbd */; };
+		EE029E5E1C5591D7007F25AC /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE029E5B1C5591D7007F25AC /* Info.plist */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		EE029DED1C557ED0007F25AC /* XServ.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = XServ.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EE029E391C558366007F25AC /* Xserv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Xserv.h; sourceTree = "<group>"; };
+		EE029E3A1C558366007F25AC /* Xserv.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Xserv.m; sourceTree = "<group>"; };
+		EE029E431C5583C6007F25AC /* SRWebSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRWebSocket.h; sourceTree = "<group>"; };
+		EE029E441C5583C6007F25AC /* SRWebSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRWebSocket.m; sourceTree = "<group>"; };
+		EE029E471C5584A8007F25AC /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		EE029E491C5584B4007F25AC /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		EE029E4B1C5584BF007F25AC /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		EE029E4D1C5586E8007F25AC /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
+		EE029E5B1C5591D7007F25AC /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Framework/Info.plist; sourceTree = "<group>"; };
+		EE029E5C1C5591D7007F25AC /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; name = module.modulemap; path = Framework/module.modulemap; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		EE029DE91C557ED0007F25AC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EE029E4E1C5586E8007F25AC /* libicucore.tbd in Frameworks */,
+				EE029E4C1C5584BF007F25AC /* Security.framework in Frameworks */,
+				EE029E4A1C5584B4007F25AC /* Foundation.framework in Frameworks */,
+				EE029E481C5584A8007F25AC /* CFNetwork.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		EE029DE31C557ED0007F25AC = {
+			isa = PBXGroup;
+			children = (
+				EE029E5A1C5591C0007F25AC /* Supportig file */,
+				EE029E4D1C5586E8007F25AC /* libicucore.tbd */,
+				EE029E4B1C5584BF007F25AC /* Security.framework */,
+				EE029E491C5584B4007F25AC /* Foundation.framework */,
+				EE029E471C5584A8007F25AC /* CFNetwork.framework */,
+				EE029E421C5583C6007F25AC /* SocketRocket */,
+				EE029DEF1C557ED0007F25AC /* XServ */,
+				EE029DEE1C557ED0007F25AC /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		EE029DEE1C557ED0007F25AC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				EE029DED1C557ED0007F25AC /* XServ.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		EE029DEF1C557ED0007F25AC /* XServ */ = {
+			isa = PBXGroup;
+			children = (
+				EE029E391C558366007F25AC /* Xserv.h */,
+				EE029E3A1C558366007F25AC /* Xserv.m */,
+			);
+			path = XServ;
+			sourceTree = "<group>";
+		};
+		EE029E421C5583C6007F25AC /* SocketRocket */ = {
+			isa = PBXGroup;
+			children = (
+				EE029E431C5583C6007F25AC /* SRWebSocket.h */,
+				EE029E441C5583C6007F25AC /* SRWebSocket.m */,
+			);
+			path = SocketRocket;
+			sourceTree = "<group>";
+		};
+		EE029E5A1C5591C0007F25AC /* Supportig file */ = {
+			isa = PBXGroup;
+			children = (
+				EE029E5B1C5591D7007F25AC /* Info.plist */,
+				EE029E5C1C5591D7007F25AC /* module.modulemap */,
+			);
+			name = "Supportig file";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		EE029DEA1C557ED0007F25AC /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EE029E3B1C558366007F25AC /* Xserv.h in Headers */,
+				EE029E451C5583C6007F25AC /* SRWebSocket.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		EE029DEC1C557ED0007F25AC /* XServ */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EE029DF51C557ED0007F25AC /* Build configuration list for PBXNativeTarget "XServ" */;
+			buildPhases = (
+				EE029DE81C557ED0007F25AC /* Sources */,
+				EE029DE91C557ED0007F25AC /* Frameworks */,
+				EE029DEA1C557ED0007F25AC /* Headers */,
+				EE029DEB1C557ED0007F25AC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = XServ;
+			productName = XServ;
+			productReference = EE029DED1C557ED0007F25AC /* XServ.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		EE029DE41C557ED0007F25AC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = Xserv;
+				TargetAttributes = {
+					EE029DEC1C557ED0007F25AC = {
+						CreatedOnToolsVersion = 7.2;
+					};
+				};
+			};
+			buildConfigurationList = EE029DE71C557ED0007F25AC /* Build configuration list for PBXProject "XServ" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = EE029DE31C557ED0007F25AC;
+			productRefGroup = EE029DEE1C557ED0007F25AC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				EE029DEC1C557ED0007F25AC /* XServ */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		EE029DEB1C557ED0007F25AC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EE029E5E1C5591D7007F25AC /* Info.plist in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		EE029DE81C557ED0007F25AC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				EE029E461C5583C6007F25AC /* SRWebSocket.m in Sources */,
+				EE029E3C1C558366007F25AC /* Xserv.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		EE029DF31C557ED0007F25AC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		EE029DF41C557ED0007F25AC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		EE029DF61C557ED0007F25AC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "$(SRCROOT)/Framework/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "$(PROJECT_DIR)/Framework/module.modulemap";
+				PRODUCT_BUNDLE_IDENTIFIER = it.nugara.XServ;
+				PRODUCT_MODULE_NAME = XServ;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+			};
+			name = Debug;
+		};
+		EE029DF71C557ED0007F25AC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				INFOPLIST_FILE = "$(SRCROOT)/Framework/Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MODULEMAP_FILE = "$(PROJECT_DIR)/Framework/module.modulemap";
+				PRODUCT_BUNDLE_IDENTIFIER = it.nugara.XServ;
+				PRODUCT_MODULE_NAME = XServ;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		EE029DE71C557ED0007F25AC /* Build configuration list for PBXProject "XServ" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EE029DF31C557ED0007F25AC /* Debug */,
+				EE029DF41C557ED0007F25AC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		EE029DF51C557ED0007F25AC /* Build configuration list for PBXNativeTarget "XServ" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				EE029DF61C557ED0007F25AC /* Debug */,
+				EE029DF71C557ED0007F25AC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = EE029DE41C557ED0007F25AC /* Project object */;
+}

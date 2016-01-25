@@ -1,0 +1,177 @@
+//
+//  XservViewController.m
+//  xserv-objective-c
+//
+//  Created by Giuseppe Nugara on 12/29/2015.
+//  Copyright (c) 2015 Giuseppe Nugara. All rights reserved.
+//
+
+#import "XservViewController.h"
+//#import "Xserv.h"
+#import <XServ/Xserv.h>
+
+static NSString *APP_ID = @"qLxFC-1";
+static NSString *kCellMessages = @"CellMessages";
+static NSString *kCellOperations = @"CellOperations";
+
+@interface XservViewController ()  <XservDelegate, UITextFieldDelegate>
+
+@property (nonatomic, strong) Xserv *xserv;
+@property (nonatomic, strong) NSMutableArray *messages;
+@property (nonatomic, strong) NSMutableArray *operations;
+
+@end
+
+@implementation XservViewController
+
+#pragma mark -
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+	
+    self.xserv = [[Xserv alloc]initWithAppId:APP_ID];
+    self.xserv.delegate = self;
+    self.messages = [NSMutableArray new];
+    self.operations = [NSMutableArray new];
+    [self.tableViewMessages registerClass:[UITableViewCell class] forCellReuseIdentifier:kCellMessages];
+    [self.tableViewOperations registerClass:[UITableViewCell class] forCellReuseIdentifier:kCellOperations];
+}
+
+#pragma mark - onTap Event
+
+- (IBAction)onTapConnect:(id)sender {
+    
+    [self.xserv connect];
+}
+
+- (IBAction)onTapDisconnect:(id)sender {
+    
+    [self.xserv disconnect];
+}
+
+- (IBAction)onTapBind:(id)sender {
+    
+    if(![self.textTopic.text isEqualToString:@""]) {
+        [self.xserv bindWithTopic:self.textTopic.text withEvent:self.textEvent.text];
+    }
+    else {
+        [[[UIAlertView alloc]initWithTitle:@"Info" message:@"Insert Topic" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
+    }
+}
+
+- (IBAction)onTapUnBind:(id)sender {
+    
+    if(![self.textTopic.text isEqualToString:@""]) {
+        [self.xserv unbindWithTopic:self.textTopic.text withEvent:self.textEvent.text];
+    }
+    else {
+        [[[UIAlertView alloc]initWithTitle:@"Info" message:@"Insert Topic" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
+    }
+}
+
+- (IBAction)onTapTrigger:(id)sender {
+    
+    if(![self.textTopic.text isEqualToString:@""] && ![self.textEvent.text isEqualToString:@""] && ![self.textMessage.text isEqualToString:@""]) {
+        [self.xserv trigger:self.textMessage.text withTopic:self.textTopic.text withEvent:self.textEvent.text];
+    }
+    else {
+        [[[UIAlertView alloc]initWithTitle:@"Info" message:@"Insert Topic and Event and Message" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil]show];
+    }
+}
+
+- (IBAction)onTapHistoryById:(id)sender {
+    
+    [self.xserv historyByIdWithTopic:self.textTopic.text withEvent:self.textEvent.text withOffset:30 withLimit:0];
+}
+
+- (IBAction)onTapHistoryByTimeStamo:(id)sender {
+    [self.xserv historyByTimeStampWithTopic:self.textTopic.text withEvent:self.textEvent.text withOffset:30 withLimit:0];
+}
+
+#pragma mark - Xserv Protocol
+
+- (void) didReceiveEvents:(id)message {
+    
+    NSLog(@"message: %@", message);
+    
+    [self.messages insertObject:message atIndex:0];
+    [self.tableViewMessages reloadData];
+}
+
+- (void) didReceiveOpsResponse:(id)message {
+    
+    NSLog(@"operation: %@", message);
+    
+    [self.operations insertObject:message atIndex:0];
+    [self.tableViewOperations reloadData];
+}
+
+- (void) didOpenConnection {
+    
+    NSLog(@"Connection opened");
+}
+
+- (void) didCloseConnection:(NSError *)reason {
+   
+    NSLog(@"Connection closed - %@", reason);
+}
+
+- (void) didErrorConnection:(NSError *)reason {
+    
+    NSLog(@"error: %@", reason);
+}
+
+#pragma mark - UITableViewDataSource
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    NSInteger count = 0;
+    
+    if([tableView isEqual:self.tableViewMessages])
+        count = self.messages.count;
+    else if([tableView isEqual:self.tableViewOperations])
+        count = self.operations.count;
+    
+    return count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UITableViewCell *cell;
+    
+    if([tableView isEqual:self.tableViewMessages]) {
+        
+        cell = [tableView dequeueReusableCellWithIdentifier:kCellMessages forIndexPath:indexPath];
+        
+        NSData * jsonData = [NSJSONSerialization  dataWithJSONObject:self.messages[indexPath.row] options:0 error:nil];
+        
+        cell.textLabel.font = [UIFont systemFontOfSize:8];
+        cell.textLabel.text = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    }
+    else if([tableView isEqual:self.tableViewOperations]){
+        
+        cell = [tableView dequeueReusableCellWithIdentifier:kCellOperations forIndexPath:indexPath];
+        NSData * jsonData = [NSJSONSerialization  dataWithJSONObject:self.operations[indexPath.row] options:0 error:nil];
+        cell.textLabel.font = [UIFont systemFontOfSize:8];
+        cell.textLabel.text = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    }
+    
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 15.0;
+}
+
+#pragma mark - UITextFiledDelegate
+
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    
+    return YES;
+}
+
+@end
