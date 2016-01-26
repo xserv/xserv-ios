@@ -10,7 +10,7 @@
 #import "SRWebSocket.h"
 
 static NSString *const ADDRESS = @"mobile-italia.com";
-static NSString *const PORT = @"5555";
+static NSString *const PORT = @"4332";
 static NSString *const HISTORY_ID = @"id";
 static NSString *const HISTORY_TIMESTAMP = @"timestamp";
 
@@ -26,7 +26,6 @@ typedef enum XServOperationCode : NSInteger {
 @property (nonatomic, strong) SRWebSocket *webSocket;
 @property (nonatomic, strong) NSString *appId;
 @property (nonatomic, strong) NSMutableArray *operations;
-//@property (nonatomic, strong) NSMutableArray *sentOperations;
 
 @end
 
@@ -38,15 +37,12 @@ typedef enum XServOperationCode : NSInteger {
     if (self) {
         self.appId = appId;
         self.operations = [NSMutableArray new];
-    //    self.sentOperations = [NSMutableArray new];
     }
     return self;
 }
 
 -(NSString *) bindWithTopic:(NSString *) topic withEvent:(NSString *) event
 {
-    if(![self isConnected]) return nil;
-    
     NSString *UUID = [[NSUUID UUID] UUIDString];
     
     NSDictionary *dict = @{
@@ -57,7 +53,19 @@ typedef enum XServOperationCode : NSInteger {
                           // @"auth_endpoint" : [NSDictionary new]
                            };
     
-  //  [self.sentOperations addObject:dict];
+    if(![self isConnected])
+    {
+        for(NSDictionary *op in self.operations)
+        {
+            if([op[@"topic"] isEqualToString:topic] && [op[@"event"] isEqualToString:event]) {
+                
+                return nil;
+            }
+        }
+        [self.operations addObject:dict];
+        return nil;
+    }
+    
     NSString *s = [self bv_jsonStringWithPrettyPrint:NO withDict:dict];
     NSLog(@"--> bind: %@", s);
     
@@ -68,8 +76,6 @@ typedef enum XServOperationCode : NSInteger {
 
 - (NSString *)  unbindWithTopic:(NSString *) topic withEvent:(NSString *) event {
     
-    if(![self isConnected]) return nil;
-    
     NSString *UUID = [[NSUUID UUID] UUIDString];
     
     NSDictionary *dict = @{
@@ -78,10 +84,22 @@ typedef enum XServOperationCode : NSInteger {
                            @"topic" : topic,
                            @"event" : event
                            };
-  //  [self.sentOperations addObject:dict];
+ 
     NSString *s = [self bv_jsonStringWithPrettyPrint:NO withDict:dict];
     NSLog(@"--> unbind: %@", s);
     
+    if(![self isConnected])
+    {
+        for(NSDictionary *op in self.operations)
+        {
+            if([op[@"topic"] isEqualToString:topic] && [op[@"event"] isEqualToString:event]) {
+                
+                [self.operations removeObject:op];
+            }
+        }
+        
+        return nil;
+    }
     
     [self.webSocket send:s];
     
@@ -104,7 +122,6 @@ typedef enum XServOperationCode : NSInteger {
                            @"arg3" : [NSString stringWithFormat:@"%i",limit]
                            };
     
-  //  [self.sentOperations addObject:dict];
     NSString *s = [self bv_jsonStringWithPrettyPrint:NO withDict:dict];
     NSLog(@"historyById: %@", s);
     [self.webSocket send:s];
@@ -128,7 +145,6 @@ typedef enum XServOperationCode : NSInteger {
                            @"arg3" : [NSString stringWithFormat:@"%i",limit]
                            };
     
-  //  [self.sentOperations addObject:dict];
     NSString *s = [self bv_jsonStringWithPrettyPrint:NO withDict:dict];
     NSLog(@"historyByTimeStamp: %@", s);
     [self.webSocket send:s];
@@ -181,7 +197,8 @@ typedef enum XServOperationCode : NSInteger {
 
 #pragma mark -
 
-- (void)connect {
+- (void)connect
+{
     self.webSocket.delegate = nil;
     self.webSocket = nil;
     
@@ -195,13 +212,11 @@ typedef enum XServOperationCode : NSInteger {
 
 - (void) disconnect
 {
-  //  [self.operations removeAllObjects];
-  //  [self.sentOperations removeAllObjects];
     [self.webSocket close];
     self.webSocket.delegate = nil;
     self.webSocket = nil;
     
-    if ([self.delegate respondsToSelector:@selector(didCloseConnectionWithReason:)]) {
+    if ([self.delegate respondsToSelector:@selector(didCloseConnection:)]) {
         [self.delegate didCloseConnection:nil];
     }
 }
@@ -225,9 +240,7 @@ typedef enum XServOperationCode : NSInteger {
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
-   
-  //  NSString *message = [NSString stringWithFormat:@"Reason: %@ - Code: %li", reason, (long)code];
-    
+
     NSDictionary *errorDictionary = @{ NSLocalizedDescriptionKey : reason,
                                        NSUnderlyingErrorKey : reason };
     
@@ -269,24 +282,6 @@ typedef enum XServOperationCode : NSInteger {
 
 - (void) addOperation:(NSDictionary *) operation
 {
-  /*
-    BOOL checkOperations = NO;
-    NSString *uuid = operation[@"uuid"];
-    
-    for(NSDictionary *op in self.sentOperations)
-    {
-        if([op[@"uuid"] isEqualToString:uuid]) {
-            [self.sentOperations removeObject:op];
-            checkOperations = YES;
-            continue;
-        }
-    }
-    
-    if(!checkOperations) {
-        NSLog(@"error: checkOperations: %@", operation);
-        return;
-    }
-   */
     if([operation[@"rc"] intValue] == 1) {
         if([operation[@"op"] intValue] == UNBINDCODE) {
             NSString *topic = operation[@"topic"];
@@ -304,7 +299,6 @@ typedef enum XServOperationCode : NSInteger {
             [self.operations addObject:operation];
         }
     }
-     
     
     if ([self.delegate respondsToSelector:@selector(didReceiveOpsResponse:)]) {
         [self.delegate didReceiveOpsResponse:operation];
@@ -317,11 +311,12 @@ typedef enum XServOperationCode : NSInteger {
 {
     for(NSDictionary *op in self.operations)
     {
-     //   [self.sentOperations addObject:op];
         NSString *s = [self bv_jsonStringWithPrettyPrint:NO withDict:op];
         NSLog(@"operation: %@", s);
         [self.webSocket send:s];
     }
+    
+    [self.operations removeAllObjects];
 }
 
 @end

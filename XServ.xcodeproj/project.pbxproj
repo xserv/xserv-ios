@@ -16,6 +16,7 @@
 		EE029E4C1C5584BF007F25AC /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE029E4B1C5584BF007F25AC /* Security.framework */; };
 		EE029E4E1C5586E8007F25AC /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = EE029E4D1C5586E8007F25AC /* libicucore.tbd */; };
 		EE029E5E1C5591D7007F25AC /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE029E5B1C5591D7007F25AC /* Info.plist */; };
+		EEDD19BF1C568D6A006F91AE /* XServ.h in Headers */ = {isa = PBXBuildFile; fileRef = EEDD19BE1C568D6A006F91AE /* XServ.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		EE029E4D1C5586E8007F25AC /* libicucore.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libicucore.tbd; path = usr/lib/libicucore.tbd; sourceTree = SDKROOT; };
 		EE029E5B1C5591D7007F25AC /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Framework/Info.plist; sourceTree = "<group>"; };
 		EE029E5C1C5591D7007F25AC /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; name = module.modulemap; path = Framework/module.modulemap; sourceTree = "<group>"; };
+		EEDD19BE1C568D6A006F91AE /* XServ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XServ.h; path = Framework/XServ.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +92,7 @@
 		EE029E5A1C5591C0007F25AC /* Supportig file */ = {
 			isa = PBXGroup;
 			children = (
+				EEDD19BE1C568D6A006F91AE /* XServ.h */,
 				EE029E5B1C5591D7007F25AC /* Info.plist */,
 				EE029E5C1C5591D7007F25AC /* module.modulemap */,
 			);
@@ -103,6 +106,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EEDD19BF1C568D6A006F91AE /* XServ.h in Headers */,
 				EE029E3B1C558366007F25AC /* Xserv.h in Headers */,
 				EE029E451C5583C6007F25AC /* SRWebSocket.h in Headers */,
 			);
@@ -304,6 +308,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MODULEMAP_FILE = "$(PROJECT_DIR)/Framework/module.modulemap";
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = it.nugara.XServ;
 				PRODUCT_MODULE_NAME = XServ;
 				PRODUCT_NAME = "$(TARGET_NAME)";
