@@ -15,10 +15,13 @@ static NSString *const HISTORY_ID = @"id";
 static NSString *const HISTORY_TIMESTAMP = @"timestamp";
 
 typedef enum XServOperationCode : NSInteger {
-    MESSAGECODE = 200,
-    BINDCODE = 201,
-    UNBINDCODE = 202,
-    HISTORY = 203
+    TRIGGER = 200,
+    BIND = 201,
+    UNBIND = 202,
+    HISTORY = 203,
+    PRESENCE = 204,
+    PRESENCE_IN = BIND + 200,
+    PRESENCE_OUT = UNBIND + 200
 } XServOperationCode;
 
 @interface Xserv () <SRWebSocketDelegate>
@@ -47,7 +50,7 @@ typedef enum XServOperationCode : NSInteger {
     
     NSDictionary *dict = @{
                            @"uuid" : UUID,
-                           @"op" : [NSNumber numberWithInteger:BINDCODE],
+                           @"op" : [NSNumber numberWithInteger:BIND],
                            @"topic" : topic,
                            @"event" : event
                           // @"auth_endpoint" : [NSDictionary new]
@@ -80,7 +83,7 @@ typedef enum XServOperationCode : NSInteger {
     
     NSDictionary *dict = @{
                            @"uuid" : UUID,
-                           @"op" : [NSNumber numberWithInteger:UNBINDCODE],
+                           @"op" : [NSNumber numberWithInteger:UNBIND],
                            @"topic" : topic,
                            @"event" : event
                            };
@@ -157,7 +160,7 @@ typedef enum XServOperationCode : NSInteger {
     if(![self isConnected]) return;
     
     NSDictionary *dict = @{
-                           @"op" : [NSNumber numberWithInteger:MESSAGECODE],
+                           @"op" : [NSNumber numberWithInteger:TRIGGER],
                            @"topic" : topic,
                            @"event" : event,
                            @"arg1" : message
@@ -283,7 +286,7 @@ typedef enum XServOperationCode : NSInteger {
 - (void) addOperation:(NSDictionary *) operation
 {
     if([operation[@"rc"] intValue] == 1) {
-        if([operation[@"op"] intValue] == UNBINDCODE) {
+        if([operation[@"op"] intValue] == UNBIND) {
             NSString *topic = operation[@"topic"];
             NSString *event = operation[@"event"];
             
@@ -295,7 +298,7 @@ typedef enum XServOperationCode : NSInteger {
                 }
             }
         }
-        else if([operation[@"op"] intValue] == BINDCODE) {
+        else if([operation[@"op"] intValue] == BIND) {
             [self.operations addObject:operation];
         }
     }

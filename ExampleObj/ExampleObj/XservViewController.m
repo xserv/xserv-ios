@@ -7,7 +7,6 @@
 //
 
 #import "XservViewController.h"
-//#import "Xserv.h"
 #import <XServ/Xserv.h>
 
 static NSString *APP_ID = @"9Pf80-3";
