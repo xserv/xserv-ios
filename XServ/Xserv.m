@@ -295,6 +295,15 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
            /// [self.operations addObject:[operation copy]];
         }
     }
+    else {
+        for(NSDictionary *op in self.operations) {
+            if([op[@"uuid"] isEqualToString:json[@"uuid"]]) {
+                [self.operations removeObject:op];
+                continue;
+            }
+            
+        }
+    }
     
     if ([self.delegate respondsToSelector:@selector(didReceiveOpsResponse:)]) {
         [self.delegate didReceiveOpsResponse:[operation copy]];

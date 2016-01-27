@@ -22,7 +22,6 @@
 		EE029E311C557F8C007F25AC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EE029E331C557F8C007F25AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EE029E671C559580007F25AC /* XServ.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XServ.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/XServ-bibubxkpvzcbdtexbfrfxmwkvqgm/Build/Products/Debug-iphoneos/XServ.framework"; sourceTree = "<group>"; };
-		EE029E6C1C559A06007F25AC /* ExampleSwift-Swift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ExampleSwift-Swift.h"; sourceTree = "<group>"; };
 		EE029E6D1C559E76007F25AC /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		EE029E6F1C559FD8007F25AC /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -61,7 +60,6 @@
 			children = (
 				EE029E6F1C559FD8007F25AC /* Main.storyboard */,
 				EE029E6D1C559E76007F25AC /* ViewController.swift */,
-				EE029E6C1C559A06007F25AC /* ExampleSwift-Swift.h */,
 				EE029E271C557F8C007F25AC /* AppDelegate.swift */,
 				EE029E2E1C557F8C007F25AC /* Assets.xcassets */,
 				EE029E301C557F8C007F25AC /* LaunchScreen.storyboard */,
