@@ -66,11 +66,11 @@ static NSString *kCellOperations = @"CellOperations";
 
 - (IBAction)onTapHistoryById:(id)sender {
     
-    [self.xserv historyByIdWithTopic:self.textTopic.text withEvent:self.textEvent.text withOffset:30 withLimit:0];
+    [self.xserv historyByIdWithTopic:self.textTopic.text withEvent:self.textEvent.text withOffset:[self.textOffset.text intValue] withLimit:[self.textLimit.text intValue]];
 }
 
 - (IBAction)onTapHistoryByTimeStamo:(id)sender {
-    [self.xserv historyByTimeStampWithTopic:self.textTopic.text withEvent:self.textEvent.text withOffset:30 withLimit:0];
+    [self.xserv historyByTimeStampWithTopic:self.textTopic.text withEvent:self.textEvent.text withOffset:[self.textOffset.text intValue] withLimit:[self.textLimit.text intValue]];
 }
 
 - (IBAction)onTapPrivateBind:(id)sender {

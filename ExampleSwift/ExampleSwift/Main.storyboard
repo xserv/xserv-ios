@@ -64,6 +64,10 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="gPU-iF-isw"/>
                                 </constraints>
+                                <connections>
+                                    <outlet property="dataSource" destination="whP-gf-Uak" id="Ez6-K1-CYV"/>
+                                    <outlet property="delegate" destination="whP-gf-Uak" id="NBX-Xw-875"/>
+                                </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Myi-q6-0md">
                                 <rect key="frame" x="184" y="143" width="64" height="30"/>
@@ -111,6 +115,10 @@
                                         <constraint firstAttribute="height" constant="100" id="VIo-y6-2M8"/>
                                     </constraints>
                                 </tableView>
+                                <connections>
+                                    <outlet property="dataSource" destination="whP-gf-Uak" id="maK-uD-vRk"/>
+                                    <outlet property="delegate" destination="whP-gf-Uak" id="IOu-2m-yYp"/>
+                                </connections>
                             </tableView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Operations result" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TIt-2m-vjN">
                                 <rect key="frame" x="20" y="358" width="200" height="21"/>
@@ -177,6 +185,8 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="tableEvents" destination="4MS-V3-Sfh" id="u0e-eT-Zez"/>
+                        <outlet property="tableOperations" destination="epw-yK-qc0" id="Rmu-ae-Q9S"/>
                         <outlet property="textEvent" destination="XJh-SP-96Y" id="kVt-BC-37W"/>
                         <outlet property="textLimit" destination="SL1-8r-8H4" id="lUZ-O2-Xsa"/>
                         <outlet property="textMessage" destination="Jgb-EW-iZu" id="mAW-ga-9Xh"/>

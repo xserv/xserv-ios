@@ -16,6 +16,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *textUser;
 @property (weak, nonatomic) IBOutlet UITextField *textPassword;
 @property (weak, nonatomic) IBOutlet UITableView *tableViewMessages;
+@property (weak, nonatomic) IBOutlet UITextField *textLimit;
+@property (weak, nonatomic) IBOutlet UITextField *textOffset;
 @property (weak, nonatomic) IBOutlet UITableView *tableViewOperations;
 
 - (IBAction)onTapConnect:(id)sender;

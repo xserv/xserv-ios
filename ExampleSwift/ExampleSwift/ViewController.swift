@@ -9,9 +9,16 @@
 import UIKit
 import XServ
 
-class ViewController: UIViewController, XservDelegate {
+let APP_ID = "9Pf80-3"
+let kCellEvents = "CellEvents"
+let kCellOperations = "CellOperations";
+
+
+class ViewController: UIViewController, XservDelegate, UITableViewDelegate, UITableViewDataSource {
 
     var xserv : Xserv? ;
+    var messages : [[String: AnyObject]] = []
+    var operations : [[String: AnyObject]] = []
     
     @IBOutlet weak var textTopic: UITextField!
     @IBOutlet weak var textEvent: UITextField!
@@ -20,6 +27,50 @@ class ViewController: UIViewController, XservDelegate {
     @IBOutlet weak var textPassword: UITextField!
     @IBOutlet weak var textLimit: UITextField!
     @IBOutlet weak var textOffset: UITextField!
+    
+    @IBOutlet weak var tableOperations: UITableView!
+    @IBOutlet weak var tableEvents: UITableView!
+    
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        self.messages = []
+        self.operations = []
+        self.tableEvents.registerClass(UITableViewCell.self, forCellReuseIdentifier: kCellEvents)
+        self.tableOperations.registerClass(UITableViewCell.self, forCellReuseIdentifier: kCellOperations)
+        xserv = Xserv(appId: APP_ID)
+        xserv?.delegate = self
+        xserv!.connect()
+    }
+
+    func didOpenConnection() {
+        print("connect")
+    }
+    
+    func didErrorConnection(reason: NSError!) {
+        
+    }
+    
+    func didCloseConnection(reason: NSError!) {
+        
+    }
+    
+    func didReceiveEvents(message: AnyObject!) {
+        print(message)
+        
+        self.messages.insert(message as! [String : AnyObject], atIndex: 0)
+        self.tableEvents.reloadData()
+    }
+    
+    func didReceiveOpsResponse(message: AnyObject!) {
+        print(message)
+        
+        self.operations.insert(message as! [String : AnyObject], atIndex: 0)
+        self.tableOperations.reloadData()
+    }
+    
+    
     
     @IBAction func onTapConnect(sender: AnyObject) {
         
@@ -46,54 +97,53 @@ class ViewController: UIViewController, XservDelegate {
         let params = ["user" : self.textUser.text!, "pass" : self.textPassword.text!]
         
         self.xserv?.bindWithTopic(self.textTopic.text, withEvent: self.textEvent.text, withAuthEndpoint: params)
-        
     }
     
     @IBAction func onTapUnbind(sender: AnyObject) {
+        
+        self.xserv?.unbindWithTopic(self.textTopic.text, withEvent: self.textEvent.text)
     }
     
     @IBAction func onTapPresence(sender: AnyObject) {
-    }
-    
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
         
-        xserv = Xserv(appId: "9Pf80-3")
-        xserv?.delegate = self
-        xserv!.connect()
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        self.xserv?.presenceWithTopic(self.textTopic.text, withEvent: self.textEvent.text)
     }
     
-    func didReceiveEvents(message: AnyObject!) {
-        print(message)
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return 20.0
     }
     
-    func didReceiveOpsResponse(message: AnyObject!) {
-        print(message)
-    }
-    
-    func didOpenConnection() {
-        print("connect")
-       // xserv!.bindWithTopic("milan", withEvent: "cazzate", withAuthEndpoint: nil)
-    }
-    
-    func didErrorConnection(reason: NSError!) {
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-    }
-    
-    func didCloseConnection(reason: NSError!) {
+        var count = 0
         
+        if tableView == self.tableOperations {
+            count = self.operations.count
+        }
+        else if tableView == self.tableEvents {
+            count = self.messages.count
+        }
+        
+        return count
     }
     
     
-    
-
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        var cell : UITableViewCell?
+        
+        if tableView == self.tableOperations {
+            cell = tableView.dequeueReusableCellWithIdentifier(kCellOperations, forIndexPath: indexPath)
+            let mess = self.operations[indexPath.row]
+            cell?.textLabel?.text = mess.description
+        }
+        else if tableView == self.tableEvents {
+            cell = tableView.dequeueReusableCellWithIdentifier(kCellEvents, forIndexPath: indexPath)
+            let mess = self.messages[indexPath.row]
+            cell?.textLabel?.text = mess.description
+        }
+        
+        return cell!
+    }
 }
 

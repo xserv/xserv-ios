@@ -207,7 +207,9 @@
                         <outlet property="tableViewMessages" destination="4MS-V3-Sfh" id="x6q-Fm-Cob"/>
                         <outlet property="tableViewOperations" destination="epw-yK-qc0" id="6Va-hU-kyY"/>
                         <outlet property="textEvent" destination="XJh-SP-96Y" id="z6J-BY-e7Z"/>
+                        <outlet property="textLimit" destination="SL1-8r-8H4" id="QD0-xD-cqA"/>
                         <outlet property="textMessage" destination="Jgb-EW-iZu" id="r1N-z3-74z"/>
+                        <outlet property="textOffset" destination="ZQj-Jr-rya" id="cjJ-cb-eWA"/>
                         <outlet property="textPassword" destination="k89-oD-iCM" id="ety-7h-OT2"/>
                         <outlet property="textTopic" destination="sb7-zf-2vx" id="7aX-VJ-tif"/>
                         <outlet property="textUser" destination="axD-Zc-rHk" id="aIp-WP-T0q"/>
