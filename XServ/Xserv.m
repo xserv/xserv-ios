@@ -224,6 +224,25 @@ typedef enum XServOperationCode : NSInteger {
     return UUID;
 }
 
+- (NSString *) presenceWithTopic:(NSString *) topic withEvent:(NSString *) event {
+    
+    if(![self isConnected]) return nil;
+    
+    NSString *UUID = [[NSUUID UUID] UUIDString];
+    
+    NSDictionary *dict = @{
+                           @"uuid" : UUID,
+                           @"op" : [NSNumber numberWithInteger:PRESENCE],
+                           @"topic" : topic,
+                           @"event" : event
+                           };
+    
+    [self send:dict];
+    
+    return UUID;
+
+}
+
 #pragma mark - SRWebSocketDelegate
 
 - (void)webSocketDidOpen:(SRWebSocket *)newWebSocket {

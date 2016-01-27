@@ -84,6 +84,9 @@ static NSString *kCellOperations = @"CellOperations";
 }
 
 - (IBAction)onTapPresence:(id)sender {
+    
+    [self.xserv presenceWithTopic:self.textTopic.text withEvent:self.textEvent.text];
+    
 }
 
 #pragma mark - Xserv Protocol

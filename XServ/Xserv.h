@@ -42,10 +42,11 @@ typedef enum XservResultCode : NSInteger {
 - (void) connect;
 - (void) disconnect;
 - (BOOL) isConnected;
--(NSString *) bindWithTopic:(NSString *) topic withEvent:(NSString *) event withAuthentication:(NSDictionary *) params;
+- (NSString *) bindWithTopic:(NSString *) topic withEvent:(NSString *) event withAuthentication:(NSDictionary *) params;
 - (NSString *) unbindWithTopic:(NSString *) topic withEvent:(NSString *) event;
 - (NSString *) trigger:(NSString *) message withTopic:(NSString *) topic withEvent:(NSString *) event;
 - (NSString *) historyByIdWithTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset withLimit:(int) limit;
 - (NSString *) historyByTimeStampWithTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset withLimit:(int) limit;
+- (NSString *) presenceWithTopic:(NSString *) topic withEvent:(NSString *) event;
 
 @end
