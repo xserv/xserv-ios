@@ -20,7 +20,6 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
 @property (nonatomic, strong) SRWebSocket *webSocket;
 @property (nonatomic, strong) NSString *appId;
 @property (nonatomic, strong) NSMutableArray *operations;
-@property (nonatomic, strong) NSMutableArray *offlineOperations;
 @property (nonatomic, strong) NSDictionary *userData;
 
 @end
@@ -35,7 +34,6 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
     if (self) {
         self.appId = appId;
         self.operations = [NSMutableArray new];
-        self.offlineOperations = [NSMutableArray new];
     }
     return self;
 }
@@ -72,8 +70,10 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
 
 #pragma mark - Operation Method
 
--(NSString *) bindWithTopic:(NSString *) topic withEvent:(NSString *) event withAuthentication:(NSDictionary *) params
+-(NSString *) bindWithTopic:(NSString *) topic withEvent:(NSString *) event withAuthEndpoint:(NSDictionary *) params
 {
+    if(![self isConnected]) return nil;
+    
     NSString *UUID = [[NSUUID UUID] UUIDString];
     
     NSMutableDictionary *dict = [NSMutableDictionary new];
@@ -87,19 +87,15 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
         [dict setObject:params forKey:@"auth_endpoint"];
     }
     
-    if(![self isConnected])
+    for(NSDictionary *op in self.operations)
     {
-        for(NSDictionary *op in self.offlineOperations)
-        {
-            if([op[@"topic"] isEqualToString:topic] && [op[@"event"] isEqualToString:event]) {
-                
-                return nil;
-            }
+        if([op[@"topic"] isEqualToString:topic] && [op[@"event"] isEqualToString:event]) {
+            
+            return nil;
         }
-        [self.offlineOperations addObject:dict];
-        
-        return nil;
     }
+   
+    [self.operations addObject:dict];
     
     [self send:dict];
     
@@ -107,6 +103,8 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
 }
 
 - (NSString *)  unbindWithTopic:(NSString *) topic withEvent:(NSString *) event {
+    
+    if(![self isConnected]) return nil;
     
     NSString *UUID = [[NSUUID UUID] UUIDString];
     
@@ -116,28 +114,6 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
                            @"topic" : topic,
                            @"event" : event
                            };
-    
-    if(![self isConnected])
-    {
-        for(NSDictionary *op in self.offlineOperations)
-        {
-            if([op[@"topic"] isEqualToString:topic] && [op[@"event"] isEqualToString:event]) {
-                
-                [self.offlineOperations removeObject:op];
-                return nil;
-            }
-        }
-        for(NSDictionary *op in self.operations)
-        {
-            if([op[@"topic"] isEqualToString:topic] && [op[@"event"] isEqualToString:event]) {
-                
-                [self.operations removeObject:op];
-                return nil;
-            }
-        }
-        
-        return nil;
-    }
     
     [self send:dict];
     
@@ -221,7 +197,6 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
     [self send:dict];
     
     return UUID;
-
 }
 
 #pragma mark - SRWebSocketDelegate
@@ -289,6 +264,8 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
     
     if([operation[@"rc"] intValue] == 1) {
         
+        [operation setObject:[self getOperationNameByCode:[operation[@"op"] intValue] ] forKey:@"name"];
+       
         if(operation[@"data"] && ![operation[@"data"] isEqualToString:@""]) {
             
             NSData *nsdataFromBase64String = [[NSData alloc] initWithBase64EncodedString:operation[@"data"] options:0];
@@ -315,16 +292,7 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
                 self.userData = operation[@"data"];
             }
             
-            [self.operations addObject:[operation copy]];
-        }
-    }
-    
-    //delete operation from offline opearation checking UUID
-    for(NSDictionary *offOp in self.offlineOperations)
-    {
-        if([offOp[@"uuid"] isEqualToString:operation[@"uuid"]]) {
-            [self.offlineOperations removeObject:offOp];
-            continue;
+           /// [self.operations addObject:[operation copy]];
         }
     }
     
@@ -333,7 +301,6 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
     }
     
     NSLog(@"count operations: %@", self.operations);
-    NSLog(@"count offline operations: %@", self.offlineOperations);
 }
 
 - (void) send :(NSDictionary *) dictionary {
@@ -346,11 +313,14 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
                                  @"pass": dictionary[@"auth_endpoint"][@"pass"]
                                  };
      
-        NSLog(@"params: %@", params);
+        NSString *urlString;
         
-     //   endpoint
-        
-        NSString *urlString = [NSString stringWithFormat:@"http://%@:%@/app/%@/auth_user", ADDRESS, PORT, self.appId];
+        if(dictionary[@"auth_endpoint"][@"endpoint"]) {
+            urlString = dictionary[@"auth_endpoint"][@"endpoint"];
+        }
+        else {
+            urlString = [NSString stringWithFormat:@"http://%@:%@/app/%@/auth_user", ADDRESS, PORT, self.appId];
+        }
         
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
         
@@ -391,10 +361,6 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
 
 - (void) sendOperations
 {
-    for(NSDictionary *op in self.offlineOperations) {
-        [self send:op];
-    }
-    
     for(NSDictionary *op in self.operations) {
         [self send:op];
     }
@@ -421,5 +387,38 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
         return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     }
 }
+
+- (NSString *) getOperationNameByCode:(int) code {
+    
+    NSString *stringCode = @"";
+    
+    switch (code) {
+        case BIND:
+            stringCode = @"bind";
+            break;
+        case UNBIND:
+            stringCode = @"unbind";
+            break;
+        case HISTORY:
+            stringCode = @"history";
+            break;
+        case PRESENCE:
+            stringCode = @"presence";
+            break;
+        case PRESENCE_IN:
+            stringCode = @"presence_in";
+            break;
+        case PRESENCE_OUT:
+            stringCode = @"presence_out";
+            break;
+        case TRIGGER:
+            stringCode = @"trigger";
+            break;
+        default:
+            break;
+    }
+    
+    return stringCode;
+};
 
 @end

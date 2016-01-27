@@ -51,7 +51,7 @@ static NSString *kCellOperations = @"CellOperations";
 
 - (IBAction)onTapBind:(id)sender {
     
-    [self.xserv bindWithTopic:self.textTopic.text withEvent:self.textEvent.text withAuthentication:nil];
+    [self.xserv bindWithTopic:self.textTopic.text withEvent:self.textEvent.text withAuthEndpoint:nil];
 }
 
 - (IBAction)onTapUnBind:(id)sender {
@@ -80,7 +80,7 @@ static NSString *kCellOperations = @"CellOperations";
                                          @"pass" : self.textPassword.text
                                          };
     
-    [self.xserv bindWithTopic:self.textTopic.text withEvent:self.textEvent.text withAuthentication:autorizationParams];
+    [self.xserv bindWithTopic:self.textTopic.text withEvent:self.textEvent.text withAuthEndpoint:autorizationParams];
 }
 
 - (IBAction)onTapPresence:(id)sender {
