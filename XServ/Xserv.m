@@ -59,7 +59,6 @@ typedef enum XServOperationCode : NSInteger {
     
     NSString *urlString = [NSString stringWithFormat:@"ws://%@:%@/ws/%@", ADDRESS, PORT, self.appId];
     self.webSocket =[[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
-    
     self.webSocket.delegate = self;
     
     [self.webSocket open];
@@ -78,7 +77,7 @@ typedef enum XServOperationCode : NSInteger {
 
 - (BOOL) isConnected {
     
-    return self.webSocket.readyState == SR_OPEN;
+    return self.webSocket && self.webSocket.readyState == SR_OPEN;
 }
 
 #pragma mark - Operation Method
@@ -328,8 +327,6 @@ typedef enum XServOperationCode : NSInteger {
             
             [self.operations addObject:[operation copy]];
         }
-        
-       
     }
     
     //delete operation from offline opearation checking UUID
