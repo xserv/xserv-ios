@@ -15,16 +15,6 @@ NSString *const HISTORY_ID = @"id";
 NSString *const HISTORY_TIMESTAMP = @"timestamp";
 NSString *const XServErrorDomain = @"XServErrorDomain";
 
-typedef enum XServOperationCode : NSInteger {
-    TRIGGER = 200,
-    BIND = 201,
-    UNBIND = 202,
-    HISTORY = 203,
-    PRESENCE = 204,
-    PRESENCE_IN = BIND + 200,
-    PRESENCE_OUT = UNBIND + 200
-} XServOperationCode;
-
 @interface Xserv () <SRWebSocketDelegate>
 
 @property (nonatomic, strong) SRWebSocket *webSocket;
@@ -299,7 +289,7 @@ typedef enum XServOperationCode : NSInteger {
     
     if([operation[@"rc"] intValue] == 1) {
         
-        if(operation[@"data"]) {
+        if(operation[@"data"] && ![operation[@"data"] isEqualToString:@""]) {
             
             NSData *nsdataFromBase64String = [[NSData alloc] initWithBase64EncodedString:operation[@"data"] options:0];
 

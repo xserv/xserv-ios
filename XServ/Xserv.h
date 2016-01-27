@@ -19,6 +19,17 @@ typedef enum XservResultCode : NSInteger {
     RC_NOT_PRIVATE = -6,
 } XservResultCode;
 
+typedef enum XServOperationCode : NSInteger {
+    TRIGGER = 200,
+    BIND = 201,
+    UNBIND = 202,
+    HISTORY = 203,
+    PRESENCE = 204,
+    PRESENCE_IN = BIND + 200,
+    PRESENCE_OUT = UNBIND + 200
+} XServOperationCode;
+
+
 @protocol XservDelegate <NSObject>
 
 - (void) didReceiveEvents:(id)message;
