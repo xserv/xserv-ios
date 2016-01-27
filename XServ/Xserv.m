@@ -257,10 +257,6 @@ typedef enum XServOperationCode : NSInteger {
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
     
-    NSLog(@"%s", __func__);
-    NSLog(@"code: %li", (long)code);
-    NSLog(@"reason: %@", reason);
-    
     NSMutableDictionary* details = [NSMutableDictionary dictionary];
     [details setValue:reason forKey:NSLocalizedDescriptionKey];
     NSError *error = [NSError errorWithDomain:XServErrorDomain code:code userInfo:details];
@@ -300,7 +296,6 @@ typedef enum XServOperationCode : NSInteger {
 
 - (void) addOperation:(NSDictionary *) json
 {
-    
     NSMutableDictionary *operation = [NSMutableDictionary dictionaryWithDictionary:json];
     
     if([operation[@"rc"] intValue] == 1) {
@@ -335,7 +330,7 @@ typedef enum XServOperationCode : NSInteger {
         }
         
        
-    } 
+    }
     
     //delete operation from offline opearation checking UUID
     for(NSDictionary *offOp in self.offlineOperations)
@@ -420,7 +415,7 @@ typedef enum XServOperationCode : NSInteger {
 
 - (BOOL) isPrivateTopic:(NSString *) topic {
     
-    if([[topic substringToIndex:1] isEqualToString:@"@"])
+    if(topic.length >0 &&  [[topic substringToIndex:1] isEqualToString:@"@"])
         return YES;
     
     return NO;
