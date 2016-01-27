@@ -13,9 +13,10 @@
 @property (weak, nonatomic) IBOutlet UITextField *textTopic;
 @property (weak, nonatomic) IBOutlet UITextField *textEvent;
 @property (weak, nonatomic) IBOutlet UITextField *textMessage;
+@property (weak, nonatomic) IBOutlet UITextField *textUser;
+@property (weak, nonatomic) IBOutlet UITextField *textPassword;
 @property (weak, nonatomic) IBOutlet UITableView *tableViewMessages;
 @property (weak, nonatomic) IBOutlet UITableView *tableViewOperations;
-
 
 - (IBAction)onTapConnect:(id)sender;
 - (IBAction)onTapDisconnect:(id)sender;
@@ -24,6 +25,8 @@
 - (IBAction)onTapTrigger:(id)sender;
 - (IBAction)onTapHistoryById:(id)sender;
 - (IBAction)onTapHistoryByTimeStamo:(id)sender;
+- (IBAction)onTapPrivateBind:(id)sender;
+- (IBAction)onTapPresence:(id)sender;
 
 
 @end

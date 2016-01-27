@@ -39,12 +39,12 @@ typedef enum XservResultCode : NSInteger {
 @property (nonatomic, weak) id <XservDelegate> delegate;
 
 - (instancetype)initWithAppId:(NSString *) appId;
-- (BOOL) isConnected;
 - (void) connect;
 - (void) disconnect;
-- (NSString *) bindWithTopic:(NSString *) topic withEvent:(NSString *) event;
+- (BOOL) isConnected;
+-(NSString *) bindWithTopic:(NSString *) topic withEvent:(NSString *) event withAuthentication:(NSDictionary *) params;
 - (NSString *) unbindWithTopic:(NSString *) topic withEvent:(NSString *) event;
-- (void) trigger:(NSString *) message withTopic:(NSString *) topic withEvent:(NSString *) event;
+- (NSString *) trigger:(NSString *) message withTopic:(NSString *) topic withEvent:(NSString *) event;
 - (NSString *) historyByIdWithTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset withLimit:(int) limit;
 - (NSString *) historyByTimeStampWithTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset withLimit:(int) limit;
 

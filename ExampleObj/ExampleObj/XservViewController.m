@@ -51,7 +51,7 @@ static NSString *kCellOperations = @"CellOperations";
 
 - (IBAction)onTapBind:(id)sender {
     
-    [self.xserv bindWithTopic:self.textTopic.text withEvent:self.textEvent.text];
+    [self.xserv bindWithTopic:self.textTopic.text withEvent:self.textEvent.text withAuthentication:nil];
 }
 
 - (IBAction)onTapUnBind:(id)sender {
@@ -71,6 +71,19 @@ static NSString *kCellOperations = @"CellOperations";
 
 - (IBAction)onTapHistoryByTimeStamo:(id)sender {
     [self.xserv historyByTimeStampWithTopic:self.textTopic.text withEvent:self.textEvent.text withOffset:30 withLimit:0];
+}
+
+- (IBAction)onTapPrivateBind:(id)sender {
+    
+    NSDictionary *autorizationParams = @{
+                                         @"user" : self.textUser.text,
+                                         @"pass" : self.textPassword.text
+                                         };
+    
+    [self.xserv bindWithTopic:self.textTopic.text withEvent:self.textEvent.text withAuthentication:autorizationParams];
+}
+
+- (IBAction)onTapPresence:(id)sender {
 }
 
 #pragma mark - Xserv Protocol
