@@ -81,14 +81,6 @@ typedef enum XServOperationCode : NSInteger {
     return self.webSocket.readyState == SR_OPEN;
 }
 
-- (BOOL) checkConnection
-{
-    if([self isConnected])
-        return YES;
-    
-    return NO;
-}
-
 #pragma mark - Operation Method
 
 -(NSString *) bindWithTopic:(NSString *) topic withEvent:(NSString *) event withAuthentication:(NSDictionary *) params
@@ -339,17 +331,18 @@ typedef enum XServOperationCode : NSInteger {
                 self.userData = operation[@"data"];
             }
             
-            
             [self.operations addObject:[operation copy]];
         }
         
-       //delete operation from offline opearation checking UUID
-        for(NSDictionary *offOp in self.offlineOperations)
-        {
-            if([offOp[@"uuid"] isEqualToString:operation[@"uuid"]]) {
-                [self.offlineOperations removeObject:offOp];
-                continue;
-            }
+       
+    } 
+    
+    //delete operation from offline opearation checking UUID
+    for(NSDictionary *offOp in self.offlineOperations)
+    {
+        if([offOp[@"uuid"] isEqualToString:operation[@"uuid"]]) {
+            [self.offlineOperations removeObject:offOp];
+            continue;
         }
     }
     
@@ -363,7 +356,7 @@ typedef enum XServOperationCode : NSInteger {
 
 - (void) send :(NSDictionary *) dictionary {
     
-    if([dictionary[@"op"] intValue] == BIND && dictionary[@"auth_endpoint"])
+    if([dictionary[@"op"] intValue] == BIND && dictionary[@"auth_endpoint"] && [self isPrivateTopic:dictionary[@"topic"]])
     {
         NSDictionary *params = @{
                                  @"topic": dictionary[@"topic"],
@@ -372,6 +365,8 @@ typedef enum XServOperationCode : NSInteger {
                                  };
      
         NSLog(@"params: %@", params);
+        
+     //   endpoint
         
         NSString *urlString = [NSString stringWithFormat:@"http://%@:%@/app/%@/auth_user", ADDRESS, PORT, self.appId];
         
