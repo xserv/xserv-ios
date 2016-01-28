@@ -16,18 +16,19 @@ NSString *const PORT = @"4332";
 NSString *const HISTORY_ID = @"id";
 NSString *const HISTORY_TIMESTAMP = @"timestamp";
 NSString *const XServErrorDomain = @"XServErrorDomain";
+int const Delay = 1;
 
 @interface Xserv () <SRWebSocketDelegate>
 
 @property (nonatomic, strong) SRWebSocket *webSocket;
 @property (nonatomic, strong) NSString *appId;
 @property (nonatomic, strong) NSDictionary *userData;
+@property int delay;
 
 @end
 
 @implementation Xserv
 
-#pragma mark 
 
 - (instancetype)initWithAppId:(NSString *) appId
 {
@@ -42,6 +43,8 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
 
 - (void)connect
 {
+    if([self isConnected]) return;
+    
     self.webSocket.delegate = nil;
     self.webSocket = nil;
     
@@ -54,6 +57,8 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
 
 - (void) disconnect
 {
+    if(![self isConnected]) return;
+    
     [self.webSocket close];
     self.webSocket.delegate = nil;
     self.webSocket = nil;
@@ -66,6 +71,13 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
 - (BOOL) isConnected {
     
     return self.webSocket && self.webSocket.readyState == SR_OPEN;
+}
+
+- (void) reconnect
+{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Delay * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+        [self connect];
+    });
 }
 
 #pragma mark - Operation Method
@@ -231,7 +243,7 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
         [self.delegate didErrorConnection:error];
     }
     
-    [self connect];
+    [self reconnect];
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
@@ -244,7 +256,7 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
         [self.delegate didCloseConnection:error];
     }
     
-    [self connect];
+    [self reconnect];
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message {
@@ -254,14 +266,14 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
         NSError *jsonParsingError = nil;
         NSDictionary *obj = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonParsingError];
         
-        [self addOperation:obj];
+        [self manageMessage:obj];
     }
 }
 
 #pragma mark -
 
 
-- (void) addOperation:(NSDictionary *) json
+- (void) manageMessage:(NSDictionary *) json
 {
     NSMutableDictionary *operation = [NSMutableDictionary dictionaryWithDictionary:json];
     
@@ -290,8 +302,10 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
             [self.delegate didReceiveOpsResponse:[operation copy]];
         }
     }
-    else if ([self.delegate respondsToSelector:@selector(didReceiveEvents:)]) {
-        [self.delegate didReceiveEvents:[operation copy]];
+    else if(operation[@"message"]) {
+        if ([self.delegate respondsToSelector:@selector(didReceiveEvents:)]) {
+            [self.delegate didReceiveEvents:[operation copy]];
+        }
     }
 }
 
@@ -338,7 +352,8 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
                         [newJson setObject:json[@"sign"] forKey:@"arg3"];
                     }
                     
-                    [self send:newJson];
+                    NSString *s = [self jsonStringWithDict:newJson];
+                    [self.webSocket send:s];
                     
                 }] resume];
     }
