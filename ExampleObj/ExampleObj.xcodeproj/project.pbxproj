@@ -13,18 +13,18 @@
 		EE029E141C557F32007F25AC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE029E121C557F32007F25AC /* LaunchScreen.storyboard */; };
 		EE029E631C55950F007F25AC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE029E621C55950F007F25AC /* Main.storyboard */; };
 		EE029E661C559519007F25AC /* XservViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE029E651C559519007F25AC /* XservViewController.m */; };
-		EEDD19C31C568E11006F91AE /* XServ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEDD19C21C568E11006F91AE /* XServ.framework */; };
-		EEDD19C41C568E11006F91AE /* XServ.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EEDD19C21C568E11006F91AE /* XServ.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EEDD19D11C5A98FA006F91AE /* XServ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEDD19C21C568E11006F91AE /* XServ.framework */; };
+		EEDD19D21C5A98FA006F91AE /* XServ.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EEDD19C21C568E11006F91AE /* XServ.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		EEDD19C51C568E11006F91AE /* Embed Frameworks */ = {
+		EEDD19D31C5A98FA006F91AE /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				EEDD19C41C568E11006F91AE /* XServ.framework in Embed Frameworks */,
+				EEDD19D21C5A98FA006F91AE /* XServ.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -50,7 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EEDD19C31C568E11006F91AE /* XServ.framework in Frameworks */,
+				EEDD19D11C5A98FA006F91AE /* XServ.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -116,7 +116,7 @@
 				EE029DFD1C557F32007F25AC /* Sources */,
 				EE029DFE1C557F32007F25AC /* Frameworks */,
 				EE029DFF1C557F32007F25AC /* Resources */,
-				EEDD19C51C568E11006F91AE /* Embed Frameworks */,
+				EEDD19D31C5A98FA006F91AE /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

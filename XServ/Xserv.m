@@ -97,7 +97,7 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
     return [self bindOnTopic:topic withEvent:event withAuthEndpoint:nil];
 }
 
-- (NSString *)  unbindOnTopic:(NSString *) topic withEvent:(NSString *) event {
+- (NSString *) unbindOnTopic:(NSString *) topic withEvent:(NSString *) event {
     
     if(![self isConnected]) return nil;
     
