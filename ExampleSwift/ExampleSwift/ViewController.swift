@@ -89,7 +89,7 @@ class ViewController: UIViewController, XservDelegate, UITableViewDelegate, UITa
     
     @IBAction func onTapBind(sender: AnyObject) {
         
-        self.xserv?.bindOnTopic(self.textTopic.text, withEvent: self.textEvent.text, withAuthEndpoint: nil)
+        self.xserv?.bindOnTopic(self.textTopic.text, withEvent: self.textEvent.text)
     }
     
     @IBAction func onTapPrivateBind(sender: AnyObject) {

@@ -51,7 +51,7 @@ static NSString *kCellOperations = @"CellOperations";
 
 - (IBAction)onTapBind:(id)sender {
     
-    [self.xserv bindOnTopic:self.textTopic.text withEvent:self.textEvent.text withAuthEndpoint:nil];
+    [self.xserv bindOnTopic:self.textTopic.text withEvent:self.textEvent.text];
 }
 
 - (IBAction)onTapUnBind:(id)sender {

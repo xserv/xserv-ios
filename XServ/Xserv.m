@@ -16,13 +16,12 @@ NSString *const PORT = @"4332";
 NSString *const HISTORY_ID = @"id";
 NSString *const HISTORY_TIMESTAMP = @"timestamp";
 NSString *const XServErrorDomain = @"XServErrorDomain";
-int const Delay = 1;
+int const DefaultReconnectDelay = 5000;
 
 @interface Xserv () <SRWebSocketDelegate>
 
 @property (nonatomic, strong) SRWebSocket *webSocket;
 @property (nonatomic, strong) NSString *appId;
-@property (nonatomic, strong) NSDictionary *userData;
 @property int delay;
 
 @end
@@ -30,11 +29,11 @@ int const Delay = 1;
 @implementation Xserv
 
 
-- (instancetype)initWithAppId:(NSString *) appId
+- (instancetype)initWithAppId:(NSString *) app_id
 {
     self = [super init];
     if (self) {
-        self.appId = appId;
+        self.appId = app_id;
     }
     return self;
 }
@@ -59,8 +58,8 @@ int const Delay = 1;
 {
     if(![self isConnected]) return;
     
-    [self.webSocket close];
     self.webSocket.delegate = nil;
+    [self.webSocket close];
     self.webSocket = nil;
     
     if ([self.delegate respondsToSelector:@selector(didCloseConnection:)]) {
@@ -75,14 +74,16 @@ int const Delay = 1;
 
 - (void) reconnect
 {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, Delay * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+    long delay = self.reconnectInterval ? self.reconnectInterval : DefaultReconnectDelay;
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (delay/1000) * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
         [self connect];
     });
 }
 
 #pragma mark - Operation Method
 
--(NSString *) bindOnTopic:(NSString *) topic withEvent:(NSString *) event withAuthEndpoint:(NSDictionary *) params
+-(NSString *) bindOnTopic:(NSString *) topic withEvent:(NSString *) event withAuthEndpoint:(NSDictionary *) auth_endpoint
 {
     if(![self isConnected]) return nil;
     
@@ -95,8 +96,8 @@ int const Delay = 1;
     [dict setObject:topic forKey:@"topic"];
     [dict setObject:event forKey:@"event"];
     
-    if(params) {
-        [dict setObject:params forKey:@"auth_endpoint"];
+    if(auth_endpoint) {
+        [dict setObject:auth_endpoint forKey:@"auth_endpoint"];
     }
     
     [self send:dict];
@@ -292,7 +293,7 @@ int const Delay = 1;
         if([operation[@"op"] intValue] == BIND) {
             
             if([self isPrivateTopic:operation[@"topic"]]) {
-                self.userData = operation[@"data"];
+                _userData = operation[@"data"];
             }
         }
     }

@@ -45,6 +45,8 @@ typedef enum XServOperationCode : NSInteger {
 
 @property BOOL autoConnect;
 @property (nonatomic, weak) id <XservDelegate> delegate;
+@property long reconnectInterval;
+@property (nonatomic, strong, readonly) NSDictionary *userData;
 
 - (instancetype)initWithAppId:(NSString *) appId;
 - (void) connect;
