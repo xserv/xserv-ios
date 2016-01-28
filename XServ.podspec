@@ -1,5 +1,5 @@
 #
-# Be sure to run `pod lib lint xserv-objective-c.podspec' to ensure this is a
+# Be sure to run `pod lib lint Xserv.podspec' to ensure this is a
 # valid spec before submitting.
 #
 # Any lines starting with a # are optional, but their use is encouraged
@@ -8,15 +8,15 @@
 
 Pod::Spec.new do |s|
   s.name             = "Xserv"
-  s.version          = "0.1.2"
-  s.summary          = "Library for the management of messages"
+  s.version          = "0.1.3"
+  s.summary          = "Xserv iOS Client Library"
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
 #   * Try to keep it short, snappy and to the point.
 #   * Write the description between the DESC delimiters below.
 #   * Finally, don't worry about the indent, CocoaPods strips it!  
-  s.description      = "Library for the management of messages on objective-c"
+  s.description      = "Xserv iOS Client Library"
 
   s.homepage         = "http://mobile-italia.com/xserv/"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
