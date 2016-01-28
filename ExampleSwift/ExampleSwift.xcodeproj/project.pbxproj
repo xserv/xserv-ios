@@ -13,7 +13,23 @@
 		EE029E681C559580007F25AC /* XServ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE029E671C559580007F25AC /* XServ.framework */; };
 		EE029E6E1C559E76007F25AC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE029E6D1C559E76007F25AC /* ViewController.swift */; };
 		EE029E701C559FD8007F25AC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE029E6F1C559FD8007F25AC /* Main.storyboard */; };
+		EEDD19C71C5990CE006F91AE /* XServ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEDD19C61C5990CE006F91AE /* XServ.framework */; };
+		EEDD19C81C5990CE006F91AE /* XServ.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EEDD19C61C5990CE006F91AE /* XServ.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		EEDD19C91C5990CE006F91AE /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				EEDD19C81C5990CE006F91AE /* XServ.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		EE029E241C557F8C007F25AC /* ExampleSwift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleSwift.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -24,6 +40,7 @@
 		EE029E671C559580007F25AC /* XServ.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XServ.framework; path = "../../../../../../Library/Developer/Xcode/DerivedData/XServ-bibubxkpvzcbdtexbfrfxmwkvqgm/Build/Products/Debug-iphoneos/XServ.framework"; sourceTree = "<group>"; };
 		EE029E6D1C559E76007F25AC /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		EE029E6F1C559FD8007F25AC /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		EEDD19C61C5990CE006F91AE /* XServ.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = XServ.framework; path = "/Users/giuseppen/Library/Developer/Xcode/DerivedData/XServ-aecjfgiospsytvglufvcuzrqzugp/Build/Products/Debug-iphoneos/XServ.framework"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +49,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE029E681C559580007F25AC /* XServ.framework in Frameworks */,
+				EEDD19C71C5990CE006F91AE /* XServ.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -41,6 +59,7 @@
 		EE029E1B1C557F8C007F25AC = {
 			isa = PBXGroup;
 			children = (
+				EEDD19C61C5990CE006F91AE /* XServ.framework */,
 				EE029E671C559580007F25AC /* XServ.framework */,
 				EE029E261C557F8C007F25AC /* ExampleSwift */,
 				EE029E251C557F8C007F25AC /* Products */,
@@ -78,6 +97,7 @@
 				EE029E201C557F8C007F25AC /* Sources */,
 				EE029E211C557F8C007F25AC /* Frameworks */,
 				EE029E221C557F8C007F25AC /* Resources */,
+				EEDD19C91C5990CE006F91AE /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

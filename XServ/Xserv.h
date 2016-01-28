@@ -50,11 +50,16 @@ typedef enum XServOperationCode : NSInteger {
 - (void) connect;
 - (void) disconnect;
 - (BOOL) isConnected;
-- (NSString *) bindWithTopic:(NSString *) topic withEvent:(NSString *) event withAuthEndpoint:(NSDictionary *) params;
-- (NSString *) unbindWithTopic:(NSString *) topic withEvent:(NSString *) event;
-- (NSString *) trigger:(NSString *) message withTopic:(NSString *) topic withEvent:(NSString *) event;
-- (NSString *) historyByIdWithTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset withLimit:(int) limit;
-- (NSString *) historyByTimeStampWithTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset withLimit:(int) limit;
-- (NSString *) presenceWithTopic:(NSString *) topic withEvent:(NSString *) event;
+- (NSString *) bindOnTopic:(NSString *) topic withEvent:(NSString *) event withAuthEndpoint:(NSDictionary *) params;
+- (NSString *) bindOnTopic:(NSString *) topic withEvent:(NSString *) event;
+- (NSString *) unbindOnTopic:(NSString *) topic withEvent:(NSString *) event;
+- (NSString *) unbindOnTopic:(NSString *) topic;
+- (NSString *) triggerString:(NSString *) message onTopic:(NSString *) topic withEvent:(NSString *) event;
+- (NSString *) triggerJSON:(NSDictionary *) message onTopic:(NSString *) topic withEvent:(NSString *) event;
+- (NSString *) historyByIdOnTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset withLimit:(int) limit;
+- (NSString *) historyByIdOnTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset;
+- (NSString *) historyByTimeStampOnTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset withLimit:(int) limit;
+- (NSString *) historyByTimeStampOnTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset;
+- (NSString *) presenceOnTopic:(NSString *) topic withEvent:(NSString *) event;
 
 @end

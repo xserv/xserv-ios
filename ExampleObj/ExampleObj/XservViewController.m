@@ -51,26 +51,26 @@ static NSString *kCellOperations = @"CellOperations";
 
 - (IBAction)onTapBind:(id)sender {
     
-    [self.xserv bindWithTopic:self.textTopic.text withEvent:self.textEvent.text withAuthEndpoint:nil];
+    [self.xserv bindOnTopic:self.textTopic.text withEvent:self.textEvent.text withAuthEndpoint:nil];
 }
 
 - (IBAction)onTapUnBind:(id)sender {
     
-    [self.xserv unbindWithTopic:self.textTopic.text withEvent:self.textEvent.text];
+    [self.xserv unbindOnTopic:self.textTopic.text withEvent:self.textEvent.text];
 }
 
 - (IBAction)onTapTrigger:(id)sender {
     
-    [self.xserv trigger:self.textMessage.text withTopic:self.textTopic.text withEvent:self.textEvent.text];
+    [self.xserv triggerString:self.textMessage.text onTopic:self.textTopic.text withEvent:self.textEvent.text];
 }
 
 - (IBAction)onTapHistoryById:(id)sender {
     
-    [self.xserv historyByIdWithTopic:self.textTopic.text withEvent:self.textEvent.text withOffset:[self.textOffset.text intValue] withLimit:[self.textLimit.text intValue]];
+    [self.xserv historyByIdOnTopic:self.textTopic.text withEvent:self.textEvent.text withOffset:[self.textOffset.text intValue] withLimit:[self.textLimit.text intValue]];
 }
 
 - (IBAction)onTapHistoryByTimeStamo:(id)sender {
-    [self.xserv historyByTimeStampWithTopic:self.textTopic.text withEvent:self.textEvent.text withOffset:[self.textOffset.text intValue] withLimit:[self.textLimit.text intValue]];
+    [self.xserv historyByTimeStampOnTopic:self.textTopic.text withEvent:self.textEvent.text withOffset:[self.textOffset.text intValue] withLimit:[self.textLimit.text intValue]];
 }
 
 - (IBAction)onTapPrivateBind:(id)sender {
@@ -80,12 +80,12 @@ static NSString *kCellOperations = @"CellOperations";
                                          @"pass" : self.textPassword.text
                                          };
     
-    [self.xserv bindWithTopic:self.textTopic.text withEvent:self.textEvent.text withAuthEndpoint:autorizationParams];
+    [self.xserv bindOnTopic:self.textTopic.text withEvent:self.textEvent.text withAuthEndpoint:autorizationParams];
 }
 
 - (IBAction)onTapPresence:(id)sender {
     
-    [self.xserv presenceWithTopic:self.textTopic.text withEvent:self.textEvent.text];
+    [self.xserv presenceOnTopic:self.textTopic.text withEvent:self.textEvent.text];
     
 }
 

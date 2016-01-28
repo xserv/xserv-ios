@@ -17,6 +17,8 @@
 		EE029E4E1C5586E8007F25AC /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = EE029E4D1C5586E8007F25AC /* libicucore.tbd */; };
 		EE029E5E1C5591D7007F25AC /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE029E5B1C5591D7007F25AC /* Info.plist */; };
 		EEDD19BF1C568D6A006F91AE /* XServ.h in Headers */ = {isa = PBXBuildFile; fileRef = EEDD19BE1C568D6A006F91AE /* XServ.h */; };
+		EEDD19CC1C5A704F006F91AE /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = EEDD19CA1C5A704F006F91AE /* UIDevice-Hardware.h */; };
+		EEDD19CD1C5A704F006F91AE /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = EEDD19CB1C5A704F006F91AE /* UIDevice-Hardware.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +34,8 @@
 		EE029E5B1C5591D7007F25AC /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Framework/Info.plist; sourceTree = "<group>"; };
 		EE029E5C1C5591D7007F25AC /* module.modulemap */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = "sourcecode.module-map"; name = module.modulemap; path = Framework/module.modulemap; sourceTree = "<group>"; };
 		EEDD19BE1C568D6A006F91AE /* XServ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XServ.h; path = Framework/XServ.h; sourceTree = "<group>"; };
+		EEDD19CA1C5A704F006F91AE /* UIDevice-Hardware.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice-Hardware.h"; sourceTree = "<group>"; };
+		EEDD19CB1C5A704F006F91AE /* UIDevice-Hardware.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice-Hardware.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,6 +78,8 @@
 		EE029DEF1C557ED0007F25AC /* XServ */ = {
 			isa = PBXGroup;
 			children = (
+				EEDD19CA1C5A704F006F91AE /* UIDevice-Hardware.h */,
+				EEDD19CB1C5A704F006F91AE /* UIDevice-Hardware.m */,
 				EE029E391C558366007F25AC /* Xserv.h */,
 				EE029E3A1C558366007F25AC /* Xserv.m */,
 			);
@@ -108,6 +114,7 @@
 			files = (
 				EEDD19BF1C568D6A006F91AE /* XServ.h in Headers */,
 				EE029E3B1C558366007F25AC /* Xserv.h in Headers */,
+				EEDD19CC1C5A704F006F91AE /* UIDevice-Hardware.h in Headers */,
 				EE029E451C5583C6007F25AC /* SRWebSocket.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -181,6 +188,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EE029E461C5583C6007F25AC /* SRWebSocket.m in Sources */,
+				EEDD19CD1C5A704F006F91AE /* UIDevice-Hardware.m in Sources */,
 				EE029E3C1C558366007F25AC /* Xserv.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

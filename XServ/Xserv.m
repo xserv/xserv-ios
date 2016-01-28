@@ -8,6 +8,8 @@
 
 #import "Xserv.h"
 #import "SRWebSocket.h"
+#import <UIKit/UIKit.h>
+#import "UIDevice-Hardware.h"
 
 NSString *const ADDRESS = @"mobile-italia.com";
 NSString *const PORT = @"4332";
@@ -19,7 +21,6 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
 
 @property (nonatomic, strong) SRWebSocket *webSocket;
 @property (nonatomic, strong) NSString *appId;
-@property (nonatomic, strong) NSMutableArray *operations;
 @property (nonatomic, strong) NSDictionary *userData;
 
 @end
@@ -33,7 +34,6 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
     self = [super init];
     if (self) {
         self.appId = appId;
-        self.operations = [NSMutableArray new];
     }
     return self;
 }
@@ -70,7 +70,7 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
 
 #pragma mark - Operation Method
 
--(NSString *) bindWithTopic:(NSString *) topic withEvent:(NSString *) event withAuthEndpoint:(NSDictionary *) params
+-(NSString *) bindOnTopic:(NSString *) topic withEvent:(NSString *) event withAuthEndpoint:(NSDictionary *) params
 {
     if(![self isConnected]) return nil;
     
@@ -87,22 +87,17 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
         [dict setObject:params forKey:@"auth_endpoint"];
     }
     
-    for(NSDictionary *op in self.operations)
-    {
-        if([op[@"topic"] isEqualToString:topic] && [op[@"event"] isEqualToString:event]) {
-            
-            return nil;
-        }
-    }
-   
-    [self.operations addObject:dict];
-    
     [self send:dict];
     
     return UUID;
 }
 
-- (NSString *)  unbindWithTopic:(NSString *) topic withEvent:(NSString *) event {
+- (NSString *) bindOnTopic:(NSString *) topic withEvent:(NSString *) event
+{
+    return [self bindOnTopic:topic withEvent:event withAuthEndpoint:nil];
+}
+
+- (NSString *)  unbindOnTopic:(NSString *) topic withEvent:(NSString *) event {
     
     if(![self isConnected]) return nil;
     
@@ -120,7 +115,12 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
     return UUID;
 }
 
-- (NSString *) historyByIdWithTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset withLimit:(int) limit
+- (NSString *)  unbindOnTopic:(NSString *) topic
+{
+   return [self unbindOnTopic:topic withEvent:@""];
+}
+
+- (NSString *) historyByIdOnTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset withLimit:(int) limit
 {
     if(![self isConnected]) return nil;
     
@@ -141,7 +141,12 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
     return UUID;
 }
 
-- (NSString *) historyByTimeStampWithTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset withLimit:(int) limit
+- (NSString *) historyByIdOnTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset
+{
+    return [self historyByIdOnTopic:topic withEvent:event withOffset:offset withLimit:0];
+}
+
+- (NSString *) historyByTimeStampOnTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset withLimit:(int) limit
 {
     if(![self isConnected]) return nil;
     
@@ -162,7 +167,12 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
     return UUID;
 }
 
-- (NSString *) trigger:(NSString *) message withTopic:(NSString *) topic withEvent:(NSString *) event
+- (NSString *) historyByTimeStampOnTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset
+{
+    return [self historyByTimeStampOnTopic:topic withEvent:event withOffset:offset withLimit:0];
+}
+
+- (NSString *) triggerString:(NSString *) message onTopic:(NSString *) topic withEvent:(NSString *) event
 {
     if(![self isConnected]) return nil;
     
@@ -181,7 +191,12 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
     return UUID;
 }
 
-- (NSString *) presenceWithTopic:(NSString *) topic withEvent:(NSString *) event {
+- (NSString *) triggerJSON:(NSDictionary *) message onTopic:(NSString *) topic withEvent:(NSString *) event
+{
+   return  [self triggerString:[self jsonStringWithDict:message] onTopic:topic withEvent:event];
+}
+
+- (NSString *) presenceOnTopic:(NSString *) topic withEvent:(NSString *) event {
     
     if(![self isConnected]) return nil;
     
@@ -203,7 +218,7 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
 
 - (void)webSocketDidOpen:(SRWebSocket *)newWebSocket {
     
-    [self sendOperations];
+    [self sendStats];
     
     if ([self.delegate respondsToSelector:@selector(didOpenConnection)]) {
         [self.delegate didOpenConnection];
@@ -233,30 +248,18 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message {
-    
-    [self decriptMessage:message];
-}
-
-#pragma mark -
-
--(void) decriptMessage:(id) message
-{
     if([message isKindOfClass:[NSString class]]) {
-        
         NSString *string = (NSString *) message;
-        
         NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
         NSError *jsonParsingError = nil;
         NSDictionary *obj = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonParsingError];
         
-        if(obj[@"op"]) {
-            [self addOperation:obj];
-        }
-        else if ([self.delegate respondsToSelector:@selector(didReceiveEvents:)]) {
-                [self.delegate didReceiveEvents:obj];
-        }
+        [self addOperation:obj];
     }
 }
+
+#pragma mark -
+
 
 - (void) addOperation:(NSDictionary *) json
 {
@@ -274,42 +277,22 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
             [operation setObject:data forKey:@"data"];
         }
         
-        if([operation[@"op"] intValue] == UNBIND) {
-            NSString *topic = operation[@"topic"];
-            NSString *event = operation[@"event"];
-            
-            for(NSDictionary *op in self.operations)
-            {
-                if([op[@"topic"] isEqualToString:topic] && [op[@"event"] isEqualToString:event]) {
-                    [self.operations removeObject:op];
-                    continue;
-                }
-            }
-        }
-        else if([operation[@"op"] intValue] == BIND) {
+        if([operation[@"op"] intValue] == BIND) {
             
             if([self isPrivateTopic:operation[@"topic"]]) {
                 self.userData = operation[@"data"];
             }
-            
-           /// [self.operations addObject:[operation copy]];
-        }
-    }
-    else {
-        for(NSDictionary *op in self.operations) {
-            if([op[@"uuid"] isEqualToString:json[@"uuid"]]) {
-                [self.operations removeObject:op];
-                continue;
-            }
-            
         }
     }
     
-    if ([self.delegate respondsToSelector:@selector(didReceiveOpsResponse:)]) {
-        [self.delegate didReceiveOpsResponse:[operation copy]];
+    if(operation[@"op"]) {
+        if ([self.delegate respondsToSelector:@selector(didReceiveOpsResponse:)]) {
+            [self.delegate didReceiveOpsResponse:[operation copy]];
+        }
     }
-    
-    NSLog(@"count operations: %@", self.operations);
+    else if ([self.delegate respondsToSelector:@selector(didReceiveEvents:)]) {
+        [self.delegate didReceiveEvents:[operation copy]];
+    }
 }
 
 - (void) send :(NSDictionary *) dictionary {
@@ -346,8 +329,6 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
                  
                     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
                     
-                    NSLog(@"Json: %@", json);
-                    
                     NSMutableDictionary *newJson = [NSMutableDictionary dictionaryWithDictionary:dictionary];
                     [newJson removeObjectForKey:@"auth_endpoint"];
                     
@@ -363,15 +344,8 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
     }
     else
     {
-        NSString *s = [self bv_jsonStringWithPrettyPrint:NO withDict:dictionary];
+        NSString *s = [self jsonStringWithDict:dictionary];
         [self.webSocket send:s];
-    }
-}
-
-- (void) sendOperations
-{
-    for(NSDictionary *op in self.operations) {
-        [self send:op];
     }
 }
 
@@ -383,14 +357,14 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
     return NO;
 }
 
--(NSString*) bv_jsonStringWithPrettyPrint:(BOOL) prettyPrint withDict:(NSDictionary *)dict{
+-(NSString*) jsonStringWithDict:(NSDictionary *)dict{
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict
-                                                       options:(NSJSONWritingOptions)    (prettyPrint ? NSJSONWritingPrettyPrinted : 0)
+                                                       options:0
                                                          error:&error];
     
     if (! jsonData) {
-        NSLog(@"bv_jsonStringWithPrettyPrint: error: %@", error.localizedDescription);
+        NSLog(@"Error jsonString : error: %@", error.localizedDescription);
         return @"{}";
     } else {
         return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
@@ -429,5 +403,29 @@ NSString *const XServErrorDomain = @"XServErrorDomain";
     
     return stringCode;
 };
+
+- (void) sendStats {
+    
+    NSUUID *oNSUUID = [[UIDevice currentDevice] identifierForVendor];
+    NSString *deviceId = [oNSUUID UUIDString];
+    NSString *model =  [[UIDevice currentDevice] platform];
+    NSString *systemVersion =  [[UIDevice currentDevice] systemVersion];
+    long timezoneOffset = [[NSTimeZone localTimeZone] secondsFromGMT] / 3600;
+    
+    NSTimeZone* systemTimeZone = [NSTimeZone systemTimeZone];
+    BOOL dstIsOn = [systemTimeZone isDaylightSavingTime];
+    
+    int dst = dstIsOn ? 1 : 0;
+    
+    NSDictionary *stats = @{
+                            @"uuid" : deviceId,
+                            @"model" : model,
+                            @"os" : [NSString stringWithFormat:@"iOS %@", systemVersion],
+                            @"tz_offset" : [NSNumber numberWithLong:timezoneOffset],  
+                            @"tz_dst" : [NSNumber numberWithInt:dst]
+                           };
+    
+    [self send:stats];
+}
 
 @end

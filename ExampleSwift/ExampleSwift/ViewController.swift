@@ -84,29 +84,29 @@ class ViewController: UIViewController, XservDelegate, UITableViewDelegate, UITa
     
     @IBAction func onTapTrigger(sender: AnyObject) {
         
-        self.xserv?.trigger(self.textMessage.text , withTopic: self.textTopic.text, withEvent: self.textEvent.text)
+        self.xserv?.triggerString(self.textMessage.text , onTopic: self.textTopic.text, withEvent: self.textEvent.text)
     }
     
     @IBAction func onTapBind(sender: AnyObject) {
         
-        self.xserv?.bindWithTopic(self.textTopic.text, withEvent: self.textEvent.text, withAuthEndpoint: nil)
+        self.xserv?.bindOnTopic(self.textTopic.text, withEvent: self.textEvent.text, withAuthEndpoint: nil)
     }
     
     @IBAction func onTapPrivateBind(sender: AnyObject) {
         
         let params = ["user" : self.textUser.text!, "pass" : self.textPassword.text!]
         
-        self.xserv?.bindWithTopic(self.textTopic.text, withEvent: self.textEvent.text, withAuthEndpoint: params)
+        self.xserv?.bindOnTopic(self.textTopic.text, withEvent: self.textEvent.text, withAuthEndpoint: params)
     }
     
     @IBAction func onTapUnbind(sender: AnyObject) {
         
-        self.xserv?.unbindWithTopic(self.textTopic.text, withEvent: self.textEvent.text)
+        self.xserv?.unbindOnTopic(self.textTopic.text, withEvent: self.textEvent.text)
     }
     
     @IBAction func onTapPresence(sender: AnyObject) {
         
-        self.xserv?.presenceWithTopic(self.textTopic.text, withEvent: self.textEvent.text)
+        self.xserv?.presenceOnTopic(self.textTopic.text, withEvent: self.textEvent.text)
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
@@ -126,7 +126,6 @@ class ViewController: UIViewController, XservDelegate, UITableViewDelegate, UITa
         
         return count
     }
-    
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
