@@ -15,7 +15,6 @@
 		EE029E4A1C5584B4007F25AC /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE029E491C5584B4007F25AC /* Foundation.framework */; };
 		EE029E4C1C5584BF007F25AC /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE029E4B1C5584BF007F25AC /* Security.framework */; };
 		EE029E4E1C5586E8007F25AC /* libicucore.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = EE029E4D1C5586E8007F25AC /* libicucore.tbd */; };
-		EE029E5E1C5591D7007F25AC /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = EE029E5B1C5591D7007F25AC /* Info.plist */; };
 		EEDD19BF1C568D6A006F91AE /* XServ.h in Headers */ = {isa = PBXBuildFile; fileRef = EEDD19BE1C568D6A006F91AE /* XServ.h */; };
 		EEDD19CC1C5A704F006F91AE /* UIDevice-Hardware.h in Headers */ = {isa = PBXBuildFile; fileRef = EEDD19CA1C5A704F006F91AE /* UIDevice-Hardware.h */; };
 		EEDD19CD1C5A704F006F91AE /* UIDevice-Hardware.m in Sources */ = {isa = PBXBuildFile; fileRef = EEDD19CB1C5A704F006F91AE /* UIDevice-Hardware.m */; };
@@ -176,7 +175,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EE029E5E1C5591D7007F25AC /* Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
