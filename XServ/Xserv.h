@@ -64,4 +64,6 @@ typedef enum XServOperationCode : NSInteger {
 - (NSString *) historyByTimeStampOnTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset;
 - (NSString *) presenceOnTopic:(NSString *) topic withEvent:(NSString *) event;
 
++ (BOOL) isPrivateTopic:(NSString *) topic;
+
 @end

@@ -278,32 +278,36 @@ int const DefaultReconnectDelay = 5000;
 {
     NSMutableDictionary *operation = [NSMutableDictionary dictionaryWithDictionary:json];
     
-    if([operation[@"rc"] intValue] == 1) {
+    if(operation[@"op"]) {
         
         [operation setObject:[self getOperationNameByCode:[operation[@"op"] intValue] ] forKey:@"name"];
-       
+
         if(operation[@"data"] && ![operation[@"data"] isEqualToString:@""]) {
             
             NSData *nsdataFromBase64String = [[NSData alloc] initWithBase64EncodedString:operation[@"data"] options:0];
-
+            
             NSDictionary *data = [NSJSONSerialization JSONObjectWithData:nsdataFromBase64String options:0 error:nil];
             [operation setObject:data forKey:@"data"];
         }
         
-        if([operation[@"op"] intValue] == BIND) {
+        if([operation[@"op"] intValue] == BIND  && [Xserv isPrivateTopic:operation[@"topic"]] && [operation[@"rc"] intValue] == 1) {
             
-            if([self isPrivateTopic:operation[@"topic"]]) {
-                _userData = operation[@"data"];
-            }
+            _userData = operation[@"data"];
         }
-    }
-    
-    if(operation[@"op"]) {
+        
         if ([self.delegate respondsToSelector:@selector(didReceiveOpsResponse:)]) {
             [self.delegate didReceiveOpsResponse:[operation copy]];
         }
     }
     else if(operation[@"message"]) {
+        
+        NSError *error;
+        id json = [NSJSONSerialization JSONObjectWithData:[operation[@"message"] dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        
+        if(error != nil && json != nil) {
+            [operation setObject:json forKey:@"message"];
+        }
+        
         if ([self.delegate respondsToSelector:@selector(didReceiveEvents:)]) {
             [self.delegate didReceiveEvents:[operation copy]];
         }
@@ -312,7 +316,7 @@ int const DefaultReconnectDelay = 5000;
 
 - (void) send :(NSDictionary *) dictionary {
     
-    if([dictionary[@"op"] intValue] == BIND && dictionary[@"auth_endpoint"] && [self isPrivateTopic:dictionary[@"topic"]])
+    if([dictionary[@"op"] intValue] == BIND && dictionary[@"auth_endpoint"] && [Xserv isPrivateTopic:dictionary[@"topic"]])
     {
         NSDictionary *params = @{
                                  @"topic": dictionary[@"topic"],
@@ -365,7 +369,7 @@ int const DefaultReconnectDelay = 5000;
     }
 }
 
-- (BOOL) isPrivateTopic:(NSString *) topic {
++ (BOOL) isPrivateTopic:(NSString *) topic {
     
     if(topic.length >0 &&  [[topic substringToIndex:1] isEqualToString:@"@"])
         return YES;

@@ -13,18 +13,18 @@
 		EE029E141C557F32007F25AC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE029E121C557F32007F25AC /* LaunchScreen.storyboard */; };
 		EE029E631C55950F007F25AC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE029E621C55950F007F25AC /* Main.storyboard */; };
 		EE029E661C559519007F25AC /* XservViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE029E651C559519007F25AC /* XservViewController.m */; };
-		EEDD19D11C5A98FA006F91AE /* XServ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEDD19C21C568E11006F91AE /* XServ.framework */; };
-		EEDD19D21C5A98FA006F91AE /* XServ.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EEDD19C21C568E11006F91AE /* XServ.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EEAD455C1C5CF0CA007C80E7 /* XServ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEAD455B1C5CF0CA007C80E7 /* XServ.framework */; };
+		EEAD455D1C5CF0DC007C80E7 /* XServ.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EEAD455B1C5CF0CA007C80E7 /* XServ.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		EEDD19D31C5A98FA006F91AE /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				EEDD19D21C5A98FA006F91AE /* XServ.framework in Embed Frameworks */,
+				EEAD455D1C5CF0DC007C80E7 /* XServ.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -42,7 +42,7 @@
 		EE029E621C55950F007F25AC /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		EE029E641C559519007F25AC /* XservViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XservViewController.h; sourceTree = "<group>"; };
 		EE029E651C559519007F25AC /* XservViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XservViewController.m; sourceTree = "<group>"; };
-		EEDD19C21C568E11006F91AE /* XServ.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; name = XServ.framework; path = "/Users/giuseppen/Library/Developer/Xcode/DerivedData/XServ-aecjfgiospsytvglufvcuzrqzugp/Build/Products/Debug-iphoneos/XServ.framework"; sourceTree = "<absolute>"; };
+		EEAD455B1C5CF0CA007C80E7 /* XServ.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XServ.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/XServ-aecjfgiospsytvglufvcuzrqzugp/Build/Products/Debug-iphoneos/XServ.framework"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,7 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EEDD19D11C5A98FA006F91AE /* XServ.framework in Frameworks */,
+				EEAD455C1C5CF0CA007C80E7 /* XServ.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,7 +60,7 @@
 		EE029DF81C557F32007F25AC = {
 			isa = PBXGroup;
 			children = (
-				EEDD19C21C568E11006F91AE /* XServ.framework */,
+				EEAD455B1C5CF0CA007C80E7 /* XServ.framework */,
 				EE029E031C557F32007F25AC /* ExampleObj */,
 				EE029E021C557F32007F25AC /* Products */,
 			);
@@ -234,7 +234,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -272,7 +272,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -285,13 +285,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ExampleObj",
 					"$(PROJECT_DIR)/ExampleObj/Frameworks",
 				);
 				INFOPLIST_FILE = ExampleObj/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = it.nugara.ExampleObj;
@@ -305,13 +306,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ExampleObj",
 					"$(PROJECT_DIR)/ExampleObj/Frameworks",
 				);
 				INFOPLIST_FILE = ExampleObj/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = it.nugara.ExampleObj;
