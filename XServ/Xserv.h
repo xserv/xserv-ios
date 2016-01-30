@@ -43,16 +43,15 @@ typedef enum XServOperationCode : NSInteger {
 
 @interface Xserv : NSObject
 
-@property BOOL autoConnect;
 @property (nonatomic, weak) id <XservDelegate> delegate;
 @property long reconnectInterval;
 @property (nonatomic, strong, readonly) NSDictionary *userData;
 
-- (instancetype)initWithAppId:(NSString *) appId;
+- (instancetype)initWithAppId:(NSString *) app_id;
 - (void) connect;
 - (void) disconnect;
 - (BOOL) isConnected;
-- (NSString *) bindOnTopic:(NSString *) topic withEvent:(NSString *) event withAuthEndpoint:(NSDictionary *) params;
+- (NSString *) bindOnTopic:(NSString *) topic withEvent:(NSString *) event withAuthEndpoint:(NSDictionary *) auth_endpoint;
 - (NSString *) bindOnTopic:(NSString *) topic withEvent:(NSString *) event;
 - (NSString *) unbindOnTopic:(NSString *) topic withEvent:(NSString *) event;
 - (NSString *) unbindOnTopic:(NSString *) topic;
