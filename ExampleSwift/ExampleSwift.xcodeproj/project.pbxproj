@@ -12,8 +12,8 @@
 		EE029E321C557F8C007F25AC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE029E301C557F8C007F25AC /* LaunchScreen.storyboard */; };
 		EE029E6E1C559E76007F25AC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE029E6D1C559E76007F25AC /* ViewController.swift */; };
 		EE029E701C559FD8007F25AC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE029E6F1C559FD8007F25AC /* Main.storyboard */; };
-		EEAD45621C5CF197007C80E7 /* XServ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEAD45611C5CF197007C80E7 /* XServ.framework */; };
-		EEAD45631C5CF1B8007C80E7 /* XServ.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EEAD45611C5CF197007C80E7 /* XServ.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EEAD45671C5D6AF2007C80E7 /* XServ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEAD45661C5D6AF2007C80E7 /* XServ.framework */; };
+		EEAD45691C5D6B33007C80E7 /* XServ.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EEAD45661C5D6AF2007C80E7 /* XServ.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,7 +23,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				EEAD45631C5CF1B8007C80E7 /* XServ.framework in Embed Frameworks */,
+				EEAD45691C5D6B33007C80E7 /* XServ.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -38,7 +38,7 @@
 		EE029E331C557F8C007F25AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EE029E6D1C559E76007F25AC /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		EE029E6F1C559FD8007F25AC /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		EEAD45611C5CF197007C80E7 /* XServ.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XServ.framework; path = "../../../../../Library/Developer/Xcode/DerivedData/XServ-aecjfgiospsytvglufvcuzrqzugp/Build/Products/Debug-iphoneos/XServ.framework"; sourceTree = "<group>"; };
+		EEAD45661C5D6AF2007C80E7 /* XServ.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XServ.framework; path = ExampleSwift/XServ.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,7 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EEAD45621C5CF197007C80E7 /* XServ.framework in Frameworks */,
+				EEAD45671C5D6AF2007C80E7 /* XServ.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,7 +56,7 @@
 		EE029E1B1C557F8C007F25AC = {
 			isa = PBXGroup;
 			children = (
-				EEAD45611C5CF197007C80E7 /* XServ.framework */,
+				EEAD45661C5D6AF2007C80E7 /* XServ.framework */,
 				EE029E261C557F8C007F25AC /* ExampleSwift */,
 				EE029E251C557F8C007F25AC /* Products */,
 			);
@@ -262,6 +262,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ExampleSwift",
+				);
 				INFOPLIST_FILE = ExampleSwift/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -280,6 +284,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/ExampleSwift",
+				);
 				INFOPLIST_FILE = ExampleSwift/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

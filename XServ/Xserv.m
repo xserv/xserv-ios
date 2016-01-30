@@ -22,7 +22,6 @@ int const DefaultReconnectDelay = 5000;
 
 @property (nonatomic, strong) SRWebSocket *webSocket;
 @property (nonatomic, strong) NSString *appId;
-@property int delay;
 
 @end
 
