@@ -11,7 +11,7 @@
 #import <UIKit/UIKit.h>
 #import "UIDevice-Hardware.h"
 
-NSString *const ADDRESS = @"mobile-italia.com";
+NSString *const ADDRESS = @"xserv.mobile-italia.com";
 NSString *const PORT = @"4332";
 NSString *const HISTORY_ID = @"id";
 NSString *const HISTORY_TIMESTAMP = @"timestamp";
