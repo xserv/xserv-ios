@@ -2,7 +2,7 @@
   <img src="http://mobile-italia.com/xserv/assets/images/apple-icon-114x114.png" alt="XServ" title="XServ">
 </p>
 
-XServ is a Real-time messaging library for iOS that allows you to communicate with other clients such as Android and the web.
+XServ is a simple hosted API for quickly, easily and securely integrating realtime bi-directional functionality via WebSockets to web and mobile apps, or any other Internet connected device..
 
 Choose XServ for your next project, or migrate over your existing projects—you'll be happy you did!
 
@@ -12,7 +12,7 @@ Choose XServ for your next project, or migrate over your existing projects—you
 - Read the ["Getting Started" guide](http://mobile-italia.com/xserv/docs#)
 
 ## Installation
-XSErv supports multiple methods for installing the library in a project.
+XServ supports multiple methods for installing the library in a project.
 
 ## Installation with CocoaPods
 
@@ -48,8 +48,8 @@ XServ is owned and maintained by the [mobile-italia.com] (http://mobile-italia.c
 
 ### Security Disclosure
 
-If you believe you have identified a security vulnerability with XServ, you should report it as soon as possible via email to security@mobile-italia.org. Please do not post it to a public issue tracker.
+If you believe you have identified a security vulnerability with XServ, you should report it as soon as possible via email to xserv.dev@gmail.com. Please do not post it to a public issue tracker.
 
 ## License
 
-XServ is released under the MIT license. See LICENSE for details.
+XServ is released under the GNU General Public License version 3. See LICENSE for details.
