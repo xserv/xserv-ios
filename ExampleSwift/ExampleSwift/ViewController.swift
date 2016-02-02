@@ -56,14 +56,14 @@ class ViewController: UIViewController, XservDelegate, UITableViewDelegate, UITa
         
     }
     
-    func didReceiveEvents(message: AnyObject!) {
+    func didReceiveEvents(message: [NSObject : AnyObject]!) {
         print(message)
         
         self.messages.insert(message as! [String : AnyObject], atIndex: 0)
         self.tableEvents.reloadData()
     }
     
-    func didReceiveOpsResponse(message: AnyObject!) {
+    func didReceiveOpsResponse(message: [NSObject : AnyObject]!) {
         print(message)
         
         self.operations.insert(message as! [String : AnyObject], atIndex: 0)

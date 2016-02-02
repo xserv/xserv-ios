@@ -289,7 +289,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ExampleObj",
-					"$(PROJECT_DIR)/ExampleObj/Frameworks",
 				);
 				INFOPLIST_FILE = ExampleObj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -310,7 +309,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ExampleObj",
-					"$(PROJECT_DIR)/ExampleObj/Frameworks",
 				);
 				INFOPLIST_FILE = ExampleObj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;

@@ -32,8 +32,8 @@ typedef enum XServOperationCode : NSInteger {
 
 @protocol XservDelegate <NSObject>
 
-- (void) didReceiveEvents:(id)message;
-- (void) didReceiveOpsResponse:(id)message;
+- (void) didReceiveEvents:(NSDictionary *)message;
+- (void) didReceiveOpsResponse:(NSDictionary *)message;
 
 @optional
 - (void) didOpenConnection;
