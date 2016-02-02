@@ -4,7 +4,7 @@
 
 Xserv is a simple hosted API for quickly, easily and securely integrating realtime bi-directional functionality via WebSockets to web and mobile apps, or any other Internet connected device..
 
-Choose XServ for your next project, or migrate over your existing projects—you'll be happy you did!
+Choose Xserv for your next project, or migrate over your existing projects—you'll be happy you did!
 
 ## How To Get Started
 
@@ -22,7 +22,7 @@ Xserv supports multiple methods for installing the library in a project.
 $ gem install cocoapods
 ```
 
-> CocoaPods 0.39.0+ is required to build Xserv 0.1.3+.
+> CocoaPods 0.39.0+ is required to build Xserv 0.1.4+.
 
 #### Podfile
 
@@ -52,4 +52,4 @@ If you believe you have identified a security vulnerability with Xserv, you shou
 
 ## License
 
-XServ is released under the GNU General Public License version 3. See LICENSE for details.
+Xserv is released under the GNU General Public License version 3. See LICENSE for details.
