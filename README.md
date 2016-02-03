@@ -26,7 +26,7 @@ $ gem install cocoapods
 
 > CocoaPods 0.39.0+ is required to build Xserv 0.1.4+.
 
-#### Podfile
+### Podfile
 
 To integrate Xserv into your Xcode project using CocoaPods, specify it in your `Podfile`:
 
