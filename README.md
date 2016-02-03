@@ -9,7 +9,7 @@ This library is client that allows iOS clients to connect to the [Xserv](http://
 
 ## How To Get Started
 
-- [Download Xserv](https://github.com/xserv/xserv-ios/archive/master.zip) and try out the included iPhone example apps.
+- [Download xserv-ios](https://github.com/xserv/xserv-ios/archive/master.zip) and try out the included iPhone example apps.
 - Read the ["Getting Started" guide](http://mobile-italia.com/xserv/docs#).
 
 ## Installation
