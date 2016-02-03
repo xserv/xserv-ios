@@ -4,14 +4,12 @@
 
 # Xserv iOS Client
 
-Xserv is a simple hosted API for quickly, easily and securely integrating realtime bi-directional functionality via WebSockets to web and mobile apps, or any other Internet connected device..
-
-Choose Xserv for your next project, or migrate over your existing projects—you'll be happy you did!
+Xserv iOS is a simple client library integrating real-time bi-directional messaging via WebSockets to web and mobile apps, or any other Internet connected device.
 
 ## How To Get Started
 
-- [Download Xserv](https://github.com/xserv/xserv-ios/archive/master.zip) and try out the included iPhone example apps
-- Read the ["Getting Started" guide](http://mobile-italia.com/xserv/docs#)
+- [Download Xserv](https://github.com/xserv/xserv-ios/archive/master.zip) and try out the included iPhone example apps.
+- Read the ["Getting Started" guide](http://mobile-italia.com/xserv/docs#).
 
 ## Installation
 Xserv supports multiple methods for installing the library in a project.
