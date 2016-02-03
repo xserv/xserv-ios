@@ -52,4 +52,4 @@ If you believe you have identified a security vulnerability with Xserv, you shou
 
 ## License
 
-Xserv is released under the GNU General Public License version 3. See LICENSE for details.
+Xserv is released under the GNU General Public License Version 3. See LICENSE for details.
