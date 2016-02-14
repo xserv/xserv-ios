@@ -50,7 +50,6 @@ external dependencies used:
 
 https://github.com/square/SocketRocket
 
-
 ### Security Disclosure
 
 If you believe you have identified a security vulnerability with Xserv, you should report it as soon as possible via email to xserv.dev@gmail.com. Please do not post it to a public issue tracker.
