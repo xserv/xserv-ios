@@ -46,7 +46,7 @@ $ pod install
 
 Xserv is owned and maintained by the [mobile-italia.com] (http://mobile-italia.com).
 
-external dependencies used:
+Dependencies:
 
 https://github.com/square/SocketRocket
 
