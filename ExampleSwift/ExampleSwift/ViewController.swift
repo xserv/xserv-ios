@@ -21,7 +21,6 @@ class ViewController: UIViewController, XservDelegate, UITableViewDelegate, UITa
     var operations : [[String: AnyObject]] = []
     
     @IBOutlet weak var textTopic: UITextField!
-    @IBOutlet weak var textEvent: UITextField!
     @IBOutlet weak var textMessage: UITextField!
     @IBOutlet weak var textUser: UITextField!
     @IBOutlet weak var textPassword: UITextField!
@@ -80,31 +79,31 @@ class ViewController: UIViewController, XservDelegate, UITableViewDelegate, UITa
         self.xserv?.disconnect()
     }
     
-    @IBAction func onTapTrigger(sender: AnyObject) {
+    @IBAction func onTapPublish(sender: AnyObject) {
         
-        self.xserv?.triggerString(self.textMessage.text , onTopic: self.textTopic.text, withEvent: self.textEvent.text)
+        self.xserv?.publishString(self.textMessage.text, onTopic: self.textTopic.text)
     }
     
-    @IBAction func onTapBind(sender: AnyObject) {
+    @IBAction func onTapSubscribe(sender: AnyObject) {
         
-        self.xserv?.bindOnTopic(self.textTopic.text, withEvent: self.textEvent.text)
+        self.xserv?.subscribeOnTopic(self.textTopic.text)
     }
     
-    @IBAction func onTapPrivateBind(sender: AnyObject) {
+    @IBAction func onTapPrivateSubscribe(sender: AnyObject) {
         
         let params = ["user" : self.textUser.text!, "pass" : self.textPassword.text!]
         
-        self.xserv?.bindOnTopic(self.textTopic.text, withEvent: self.textEvent.text, withAuthEndpoint: params)
+        self.xserv?.subscribeOnTopic(self.textTopic.text, withAuthEndpoint: params)
     }
     
-    @IBAction func onTapUnbind(sender: AnyObject) {
+    @IBAction func onTapUnSubscribe(sender: AnyObject) {
         
-        self.xserv?.unbindOnTopic(self.textTopic.text, withEvent: self.textEvent.text)
+        self.xserv?.unsubscribeOnTopic(self.textTopic.text)
     }
     
     @IBAction func onTapPresence(sender: AnyObject) {
         
-        self.xserv?.presenceOnTopic(self.textTopic.text, withEvent: self.textEvent.text)
+        self.xserv?.presenceOnTopic(self.textTopic.text)
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {

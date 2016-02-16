@@ -11,7 +11,6 @@
 @interface XservViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UITextField *textTopic;
-@property (weak, nonatomic) IBOutlet UITextField *textEvent;
 @property (weak, nonatomic) IBOutlet UITextField *textMessage;
 @property (weak, nonatomic) IBOutlet UITextField *textUser;
 @property (weak, nonatomic) IBOutlet UITextField *textPassword;
@@ -22,12 +21,12 @@
 
 - (IBAction)onTapConnect:(id)sender;
 - (IBAction)onTapDisconnect:(id)sender;
-- (IBAction)onTapBind:(id)sender;
-- (IBAction)onTapUnBind:(id)sender;
-- (IBAction)onTapTrigger:(id)sender;
+- (IBAction)onTapSubscribe:(id)sender;
+- (IBAction)onTapUnSubscribe:(id)sender;
+- (IBAction)onTapPublish:(id)sender;
 - (IBAction)onTapHistoryById:(id)sender;
 - (IBAction)onTapHistoryByTimeStamo:(id)sender;
-- (IBAction)onTapPrivateBind:(id)sender;
+- (IBAction)onTapPrivateSubscribe:(id)sender;
 - (IBAction)onTapPresence:(id)sender;
 
 

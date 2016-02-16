@@ -19,76 +19,68 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="urC-9b-4AB">
-                                <rect key="frame" x="1" y="20" width="65" height="30"/>
+                                <rect key="frame" x="8" y="20" width="63" height="30"/>
                                 <state key="normal" title="Connect"/>
                                 <connections>
-                                    <action selector="onTapConnect:" destination="whP-gf-Uak" eventType="touchUpInside" id="L1y-jq-tSc"/>
+                                    <action selector="onTapConnect:" destination="whP-gf-Uak" eventType="touchUpInside" id="Qpb-lb-Ydb"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zG7-pa-ZIV">
-                                <rect key="frame" x="106" y="20" width="84" height="30"/>
+                                <rect key="frame" x="89" y="20" width="79" height="30"/>
                                 <state key="normal" title="Disconnect"/>
                                 <connections>
-                                    <action selector="onTapDisconnect:" destination="whP-gf-Uak" eventType="touchUpInside" id="Oua-d5-58F"/>
+                                    <action selector="onTapDisconnect:" destination="whP-gf-Uak" eventType="touchUpInside" id="g5J-0J-ivh"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yn0-c4-NgJ">
-                                <rect key="frame" x="8" y="143" width="34" height="30"/>
+                                <rect key="frame" x="8" y="133" width="69" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <state key="normal" title="Bind"/>
+                                <state key="normal" title="Subscribe"/>
                                 <connections>
-                                    <action selector="onTapBind:" destination="whP-gf-Uak" eventType="touchUpInside" id="kKF-RI-VJ3"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qDg-Hf-63f">
-                                <rect key="frame" x="214" y="20" width="54" height="30"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <state key="normal" title="Trigger"/>
-                                <connections>
-                                    <action selector="onTapTrigger:" destination="whP-gf-Uak" eventType="touchUpInside" id="xjL-FV-UnK"/>
+                                    <action selector="onTapSubscribe:" destination="whP-gf-Uak" eventType="touchUpInside" id="DUE-Dc-cNZ"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Topic" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="sb7-zf-2vx">
-                                <rect key="frame" x="1" y="57" width="104" height="30"/>
+                                <rect key="frame" x="8" y="57" width="151" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Message" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Jgb-EW-iZu">
-                                <rect key="frame" x="212" y="57" width="110" height="30"/>
+                                <rect key="frame" x="8" y="247" width="151" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4MS-V3-Sfh">
-                                <rect key="frame" x="20" y="500" width="560" height="100"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="4MS-V3-Sfh">
+                                <rect key="frame" x="8" y="480" width="560" height="100"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="gPU-iF-isw"/>
                                 </constraints>
                                 <connections>
-                                    <outlet property="dataSource" destination="whP-gf-Uak" id="Ez6-K1-CYV"/>
-                                    <outlet property="delegate" destination="whP-gf-Uak" id="NBX-Xw-875"/>
+                                    <outlet property="dataSource" destination="whP-gf-Uak" id="rnL-Kf-LQQ"/>
+                                    <outlet property="delegate" destination="whP-gf-Uak" id="OSU-H9-Hdx"/>
                                 </connections>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Myi-q6-0md">
-                                <rect key="frame" x="184" y="143" width="64" height="30"/>
+                                <rect key="frame" x="89" y="133" width="82" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <state key="normal" title="Un Bind"/>
+                                <state key="normal" title="Unsubscribe"/>
                                 <connections>
-                                    <action selector="onTapUnbind:" destination="whP-gf-Uak" eventType="touchUpInside" id="Bvp-gA-iLT"/>
+                                    <action selector="onTapUnSubscribe:" destination="whP-gf-Uak" eventType="touchUpInside" id="gDx-K2-LOP"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cZg-b5-J5t">
-                                <rect key="frame" x="161" y="228" width="161" height="30"/>
+                                <rect key="frame" x="179" y="209" width="151" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="History By Time Stamp"/>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="User (Private Bind)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="axD-Zc-rHk">
-                                <rect key="frame" x="1" y="104" width="151" height="30"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="User (Private)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="axD-Zc-rHk">
+                                <rect key="frame" x="179" y="95" width="151" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Events" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7iX-Oy-hfG">
-                                <rect key="frame" x="20" y="479" width="100" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Messages" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7iX-Oy-hfG">
+                                <rect key="frame" x="8" y="451" width="100" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="100" id="3WR-tk-9OW"/>
                                     <constraint firstAttribute="height" constant="21" id="yRk-ps-jw7"/>
@@ -97,8 +89,8 @@
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="epw-yK-qc0">
-                                <rect key="frame" x="20" y="379" width="560" height="100"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="epw-yK-qc0">
+                                <rect key="frame" x="8" y="343" width="560" height="100"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="100" id="V8e-HG-XSm"/>
@@ -112,12 +104,12 @@
                                     </constraints>
                                 </tableView>
                                 <connections>
-                                    <outlet property="dataSource" destination="whP-gf-Uak" id="maK-uD-vRk"/>
-                                    <outlet property="delegate" destination="whP-gf-Uak" id="IOu-2m-yYp"/>
+                                    <outlet property="dataSource" destination="whP-gf-Uak" id="GYT-xB-pGh"/>
+                                    <outlet property="delegate" destination="whP-gf-Uak" id="oQI-EX-q30"/>
                                 </connections>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Operations result" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TIt-2m-vjN">
-                                <rect key="frame" x="20" y="358" width="200" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Ops result" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TIt-2m-vjN">
+                                <rect key="frame" x="8" y="314" width="200" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="1vP-jX-5nV"/>
                                     <constraint firstAttribute="width" constant="200" id="R10-MC-PVp"/>
@@ -127,44 +119,47 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="i8i-bS-BgL">
-                                <rect key="frame" x="8" y="228" width="85" height="30"/>
+                                <rect key="frame" x="8" y="209" width="85" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="History By Id"/>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3f0-jw-8sL">
-                                <rect key="frame" x="78" y="143" width="90" height="30"/>
-                                <state key="normal" title="Private Bind"/>
-                                <connections>
-                                    <action selector="onTapPrivateBind:" destination="whP-gf-Uak" eventType="touchUpInside" id="KNg-G6-rqa"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bes-Zm-s8h">
-                                <rect key="frame" x="256" y="143" width="67" height="30"/>
+                                <rect key="frame" x="179" y="133" width="67" height="30"/>
                                 <state key="normal" title="Presence"/>
                                 <connections>
-                                    <action selector="onTapPresence:" destination="whP-gf-Uak" eventType="touchUpInside" id="hBh-3a-Pvd"/>
+                                    <action selector="onTapPresence:" destination="whP-gf-Uak" eventType="touchUpInside" id="Xzk-ZT-ZU9"/>
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Limit" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="SL1-8r-8H4">
-                                <rect key="frame" x="1" y="181" width="151" height="30"/>
+                                <rect key="frame" x="8" y="171" width="151" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Offeset" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ZQj-Jr-rya">
-                                <rect key="frame" x="161" y="181" width="161" height="30"/>
+                                <rect key="frame" x="179" y="171" width="151" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password(Private Bind)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="k89-oD-iCM">
-                                <rect key="frame" x="161" y="104" width="164" height="30"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Pass (Private)" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="k89-oD-iCM">
+                                <rect key="frame" x="179" y="57" width="151" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Event" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XJh-SP-96Y">
-                                <rect key="frame" x="106" y="57" width="98" height="30"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qDg-Hf-63f">
+                                <rect key="frame" x="179" y="247" width="49" height="30"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
-                            </textField>
+                                <state key="normal" title="Publish"/>
+                                <connections>
+                                    <action selector="onTapPublish:" destination="whP-gf-Uak" eventType="touchUpInside" id="jhi-Td-Qhh"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3f0-jw-8sL">
+                                <rect key="frame" x="8" y="95" width="121" height="30"/>
+                                <state key="normal" title="Subscribe Private"/>
+                                <connections>
+                                    <action selector="onTapPrivateSubscribe:" destination="whP-gf-Uak" eventType="touchUpInside" id="yNc-QK-3Ia"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -181,15 +176,14 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="tableEvents" destination="4MS-V3-Sfh" id="u0e-eT-Zez"/>
-                        <outlet property="tableOperations" destination="epw-yK-qc0" id="Rmu-ae-Q9S"/>
-                        <outlet property="textEvent" destination="XJh-SP-96Y" id="kVt-BC-37W"/>
-                        <outlet property="textLimit" destination="SL1-8r-8H4" id="lUZ-O2-Xsa"/>
-                        <outlet property="textMessage" destination="Jgb-EW-iZu" id="mAW-ga-9Xh"/>
-                        <outlet property="textOffset" destination="ZQj-Jr-rya" id="3zo-hI-h6n"/>
-                        <outlet property="textPassword" destination="k89-oD-iCM" id="4dT-1r-G7X"/>
-                        <outlet property="textTopic" destination="sb7-zf-2vx" id="U3E-z9-Cpf"/>
-                        <outlet property="textUser" destination="axD-Zc-rHk" id="qHe-AS-28g"/>
+                        <outlet property="tableEvents" destination="4MS-V3-Sfh" id="BdI-7L-Nrt"/>
+                        <outlet property="tableOperations" destination="3Ny-0P-i5a" id="htH-FZ-hkw"/>
+                        <outlet property="textLimit" destination="SL1-8r-8H4" id="DCk-9J-MZu"/>
+                        <outlet property="textMessage" destination="Jgb-EW-iZu" id="3R1-pr-fK9"/>
+                        <outlet property="textOffset" destination="ZQj-Jr-rya" id="77F-90-yw6"/>
+                        <outlet property="textPassword" destination="k89-oD-iCM" id="eMU-P9-1vC"/>
+                        <outlet property="textTopic" destination="sb7-zf-2vx" id="BvO-rc-dZV"/>
+                        <outlet property="textUser" destination="axD-Zc-rHk" id="Kd1-44-w44"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tc2-Qw-aMS" userLabel="First Responder" sceneMemberID="firstResponder"/>

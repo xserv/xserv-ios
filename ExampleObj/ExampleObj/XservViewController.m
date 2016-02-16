@@ -10,7 +10,7 @@
 #import <XServ/Xserv.h>
 
 static NSString *APP_ID = @"9Pf80-3";
-static NSString *kCellMessages = @"CellMessages";
+static NSString *kCellEvents = @"CellEvents"
 static NSString *kCellOperations = @"CellOperations";
 
 @interface XservViewController ()  <XservDelegate, UITextFieldDelegate>
@@ -34,7 +34,7 @@ static NSString *kCellOperations = @"CellOperations";
     
     self.messages = [NSMutableArray new];
     self.operations = [NSMutableArray new];
-    [self.tableViewMessages registerClass:[UITableViewCell class] forCellReuseIdentifier:kCellMessages];
+    [self.tableViewMessages registerClass:[UITableViewCell class] forCellReuseIdentifier:kCellEvents];
     [self.tableViewOperations registerClass:[UITableViewCell class] forCellReuseIdentifier:kCellOperations];
 }
 
@@ -143,7 +143,7 @@ static NSString *kCellOperations = @"CellOperations";
     
     if([tableView isEqual:self.tableViewMessages]) {
         
-        cell = [tableView dequeueReusableCellWithIdentifier:kCellMessages forIndexPath:indexPath];
+        cell = [tableView dequeueReusableCellWithIdentifier:kCellEvents forIndexPath:indexPath];
         
         NSData * jsonData = [NSJSONSerialization  dataWithJSONObject:self.messages[indexPath.row] options:0 error:nil];
         
