@@ -56,21 +56,19 @@ class ViewController: UIViewController, XservDelegate, UITableViewDelegate, UITa
         
     }
     
-    func didReceiveEvents(message: [NSObject : AnyObject]!) {
-        print(message)
+    func didReceiveMessages(json: [NSObject : AnyObject]!) {
+        print(json)
         
-        self.messages.insert(message as! [String : AnyObject], atIndex: 0)
+        self.messages.insert(json as! [String : AnyObject], atIndex: 0)
         self.tableEvents.reloadData()
     }
     
-    func didReceiveOpsResponse(message: [NSObject : AnyObject]!) {
-        print(message)
+    func didReceiveOpsResponse(json: [NSObject : AnyObject]!) {
+        print(json)
         
-        self.operations.insert(message as! [String : AnyObject], atIndex: 0)
+        self.operations.insert(json as! [String : AnyObject], atIndex: 0)
         self.tableOperations.reloadData()
     }
-    
-    
     
     @IBAction func onTapConnect(sender: AnyObject) {
         

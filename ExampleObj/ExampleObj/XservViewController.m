@@ -31,6 +31,7 @@ static NSString *kCellOperations = @"CellOperations";
     
     self.xserv = [[Xserv alloc]initWithAppId:APP_ID];
     self.xserv.delegate = self;
+    
     self.messages = [NSMutableArray new];
     self.operations = [NSMutableArray new];
     [self.tableViewMessages registerClass:[UITableViewCell class] forCellReuseIdentifier:kCellMessages];
@@ -49,61 +50,61 @@ static NSString *kCellOperations = @"CellOperations";
     [self.xserv disconnect];
 }
 
-- (IBAction)onTapBind:(id)sender {
+- (IBAction)onTapSubscribe:(id)sender {
     
-    [self.xserv bindOnTopic:self.textTopic.text withEvent:self.textEvent.text];
+    [self.xserv subscribeOnTopic:self.textTopic.text];
 }
 
-- (IBAction)onTapUnBind:(id)sender {
+- (IBAction)onTapUnSubscribe:(id)sender {
     
-    [self.xserv unbindOnTopic:self.textTopic.text withEvent:self.textEvent.text];
+    [self.xserv unsubscribeOnTopic:self.textTopic.text];
 }
 
-- (IBAction)onTapTrigger:(id)sender {
+- (IBAction)onTapPublish:(id)sender {
     
-    [self.xserv triggerString:self.textMessage.text onTopic:self.textTopic.text withEvent:self.textEvent.text];
+    [self.xserv publishString:self.textMessage.text onTopic:self.textTopic.text];
 }
 
 - (IBAction)onTapHistoryById:(id)sender {
     
-    [self.xserv historyByIdOnTopic:self.textTopic.text withEvent:self.textEvent.text withOffset:[self.textOffset.text intValue] withLimit:[self.textLimit.text intValue]];
+    [self.xserv historyByIdOnTopic:self.textTopic.text withOffset:[self.textOffset.text intValue] withLimit:[self.textLimit.text intValue]];
 }
 
 - (IBAction)onTapHistoryByTimeStamo:(id)sender {
-    [self.xserv historyByTimeStampOnTopic:self.textTopic.text withEvent:self.textEvent.text withOffset:[self.textOffset.text intValue] withLimit:[self.textLimit.text intValue]];
+    [self.xserv historyByTimeStampOnTopic:self.textTopic.text withOffset:[self.textOffset.text intValue] withLimit:[self.textLimit.text intValue]];
 }
 
-- (IBAction)onTapPrivateBind:(id)sender {
+- (IBAction)onTapPrivateSubscribe:(id)sender {
     
     NSDictionary *autorizationParams = @{
                                          @"user" : self.textUser.text,
                                          @"pass" : self.textPassword.text
                                          };
     
-    [self.xserv bindOnTopic:self.textTopic.text withEvent:self.textEvent.text withAuthEndpoint:autorizationParams];
+    [self.xserv subscribeOnTopic:self.textTopic.text withAuthEndpoint:autorizationParams];
 }
 
 - (IBAction)onTapPresence:(id)sender {
     
-    [self.xserv presenceOnTopic:self.textTopic.text withEvent:self.textEvent.text];
+    [self.xserv presenceOnTopic:self.textTopic.text];
     
 }
 
 #pragma mark - Xserv Protocol
 
-- (void) didReceiveEvents:(id)message {
+- (void) didReceiveMessages:(NSDictionary *)json {
     
-    NSLog(@"message: %@", message);
+    NSLog(@"message: %@", json);
     
-    [self.messages insertObject:message atIndex:0];
+    [self.messages insertObject:json atIndex:0];
     [self.tableViewMessages reloadData];
 }
 
-- (void) didReceiveOpsResponse:(id)message {
+- (void) didReceiveOpsResponse:(NSDictionary *)json {
     
-    NSLog(@"operation: %@", message);
+    NSLog(@"operation: %@", json);
     
-    [self.operations insertObject:message atIndex:0];
+    [self.operations insertObject:json atIndex:0];
     [self.tableViewOperations reloadData];
 }
 

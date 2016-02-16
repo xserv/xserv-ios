@@ -52,16 +52,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		EE029DE31C557ED0007F25AC = {
+		845B00A71C73831100331447 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				EE029E5A1C5591C0007F25AC /* Supportig file */,
 				EE029E4D1C5586E8007F25AC /* libicucore.tbd */,
 				EE029E4B1C5584BF007F25AC /* Security.framework */,
 				EE029E491C5584B4007F25AC /* Foundation.framework */,
 				EE029E471C5584A8007F25AC /* CFNetwork.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		EE029DE31C557ED0007F25AC = {
+			isa = PBXGroup;
+			children = (
 				EE029E421C5583C6007F25AC /* SocketRocket */,
 				EE029DEF1C557ED0007F25AC /* XServ */,
+				EE029E5A1C5591C0007F25AC /* Supportig file */,
+				845B00A71C73831100331447 /* Frameworks */,
 				EE029DEE1C557ED0007F25AC /* Products */,
 			);
 			sourceTree = "<group>";

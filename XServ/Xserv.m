@@ -27,8 +27,9 @@ int const DefaultReconnectDelay = 5000;
 
 @implementation Xserv
 
-- (instancetype)initWithAppId:(NSString *) app_id
+- (instancetype) initWithAppId:(NSString *) app_id
 {
+    
     self = [super init];
     if (self) {
         self.appId = app_id;
@@ -38,7 +39,7 @@ int const DefaultReconnectDelay = 5000;
 
 #pragma mark - Connection Method
 
-- (void)connect {
+- (void) connect {
     
     if([self isConnected]) return;
     
@@ -46,7 +47,7 @@ int const DefaultReconnectDelay = 5000;
     self.webSocket = nil;
     
     NSString *urlString = [NSString stringWithFormat:@"ws://%@:%@/ws/%@", ADDRESS, PORT, self.appId];
-    self.webSocket =[[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
+    self.webSocket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
     self.webSocket.delegate = self;
     [self.webSocket open];
 }
@@ -80,7 +81,7 @@ int const DefaultReconnectDelay = 5000;
 
 #pragma mark - Operation Method
 
--(NSString *) bindOnTopic:(NSString *) topic withEvent:(NSString *) event withAuthEndpoint:(NSDictionary *) auth_endpoint {
+-(NSString *) subscribeOnTopic:(NSString *) topic withAuthEndpoint:(NSDictionary *) auth_endpoint {
     
     if(![self isConnected]) return nil;
     
@@ -88,9 +89,8 @@ int const DefaultReconnectDelay = 5000;
     
     NSMutableDictionary *dict = [NSMutableDictionary new];
     [dict setObject:UUID forKey:@"uuid"];
-    [dict setObject:[NSNumber numberWithInteger:BIND] forKey:@"op"];
+    [dict setObject:[NSNumber numberWithInteger:OP_SUBSCRIBE] forKey:@"op"];
     [dict setObject:topic forKey:@"topic"];
-    [dict setObject:event forKey:@"event"];
     
     if(auth_endpoint) {
         [dict setObject:auth_endpoint forKey:@"auth_endpoint"];
@@ -101,12 +101,12 @@ int const DefaultReconnectDelay = 5000;
     return UUID;
 }
 
-- (NSString *) bindOnTopic:(NSString *) topic withEvent:(NSString *) event {
+- (NSString *) subscribeOnTopic:(NSString *) topic {
     
-    return [self bindOnTopic:topic withEvent:event withAuthEndpoint:nil];
+    return [self subscribeOnTopic:topic withAuthEndpoint:nil];
 }
 
-- (NSString *) unbindOnTopic:(NSString *) topic withEvent:(NSString *) event {
+- (NSString *) unsubscribeOnTopic:(NSString *) topic {
     
     if(![self isConnected]) return nil;
     
@@ -114,21 +114,15 @@ int const DefaultReconnectDelay = 5000;
     
     NSDictionary *dict = @{
                            @"uuid" : UUID,
-                           @"op" : [NSNumber numberWithInteger:UNBIND],
-                           @"topic" : topic,
-                           @"event" : event
+                           @"op" : [NSNumber numberWithInteger:OP_UNSUBSCRIBE],
+                           @"topic" : topic
                            };
     [self send:dict];
     
     return UUID;
 }
 
-- (NSString *)  unbindOnTopic:(NSString *) topic {
-    
-   return [self unbindOnTopic:topic withEvent:@""];
-}
-
-- (NSString *) historyByIdOnTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset withLimit:(int) limit {
+- (NSString *) historyByIdOnTopic:(NSString *) topic withOffset:(int) offset withLimit:(int) limit {
     
     if(![self isConnected]) return nil;
     
@@ -136,24 +130,23 @@ int const DefaultReconnectDelay = 5000;
     
     NSDictionary *dict = @{
                            @"uuid" : UUID,
-                           @"op" : [NSNumber numberWithInteger:HISTORY],
+                           @"op" : [NSNumber numberWithInteger:OP_HISTORY],
                            @"topic" : topic,
-                           @"event" : event,
                            @"arg1" : HISTORY_ID,
-                           @"arg2" : [NSString stringWithFormat:@"%i",offset],
-                           @"arg3" : [NSString stringWithFormat:@"%i",limit]
+                           @"arg2" : [NSString stringWithFormat:@"%i", offset],
+                           @"arg3" : [NSString stringWithFormat:@"%i", limit]
                            };
     [self send:dict];
     
     return UUID;
 }
 
-- (NSString *) historyByIdOnTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset {
+- (NSString *) historyByIdOnTopic:(NSString *) topic withOffset:(int) offset {
     
-    return [self historyByIdOnTopic:topic withEvent:event withOffset:offset withLimit:0];
+    return [self historyByIdOnTopic:topic withOffset:offset withLimit:0];
 }
 
-- (NSString *) historyByTimeStampOnTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset withLimit:(int) limit {
+- (NSString *) historyByTimeStampOnTopic:(NSString *) topic withOffset:(int) offset withLimit:(int) limit {
     
     if(![self isConnected]) return nil;
     
@@ -161,24 +154,23 @@ int const DefaultReconnectDelay = 5000;
     
     NSDictionary *dict = @{
                            @"uuid" : UUID,
-                           @"op" : [NSNumber numberWithInteger:HISTORY],
+                           @"op" : [NSNumber numberWithInteger:OP_HISTORY],
                            @"topic" : topic,
-                           @"event" : event,
                            @"arg1" : HISTORY_TIMESTAMP,
-                           @"arg2" : [NSString stringWithFormat:@"%i",offset],
-                           @"arg3" : [NSString stringWithFormat:@"%i",limit]
+                           @"arg2" : [NSString stringWithFormat:@"%i", offset],
+                           @"arg3" : [NSString stringWithFormat:@"%i", limit]
                            };
     [self send:dict];
     
     return UUID;
 }
 
-- (NSString *) historyByTimeStampOnTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset {
+- (NSString *) historyByTimeStampOnTopic:(NSString *) topic withOffset:(int) offset {
     
-    return [self historyByTimeStampOnTopic:topic withEvent:event withOffset:offset withLimit:0];
+    return [self historyByTimeStampOnTopic:topic withOffset:offset withLimit:0];
 }
 
-- (NSString *) triggerString:(NSString *) message onTopic:(NSString *) topic withEvent:(NSString *) event {
+- (NSString *) publishString:(NSString *) data onTopic:(NSString *) topic {
     
     if(![self isConnected]) return nil;
     
@@ -186,22 +178,21 @@ int const DefaultReconnectDelay = 5000;
     
     NSDictionary *dict = @{
                            @"uuid" : UUID,
-                           @"op" : [NSNumber numberWithInteger:TRIGGER],
+                           @"op" : [NSNumber numberWithInteger:OP_PUBLISH],
                            @"topic" : topic,
-                           @"event" : event,
-                           @"arg1" : message
+                           @"arg1" : data
                            };
     [self send:dict];
     
     return UUID;
 }
 
-- (NSString *) triggerJSON:(NSDictionary *) message onTopic:(NSString *) topic withEvent:(NSString *) event {
+- (NSString *) publishJSON:(NSDictionary *) data onTopic:(NSString *) topic  {
     
-   return  [self triggerString:[self jsonStringWithDict:message] onTopic:topic withEvent:event];
+    return  [self publishString:[self jsonStringWithDict:data] onTopic:topic];
 }
 
-- (NSString *) presenceOnTopic:(NSString *) topic withEvent:(NSString *) event {
+- (NSString *) presenceOnTopic:(NSString *) topic {
     
     if(![self isConnected]) return nil;
     
@@ -209,9 +200,8 @@ int const DefaultReconnectDelay = 5000;
     
     NSDictionary *dict = @{
                            @"uuid" : UUID,
-                           @"op" : [NSNumber numberWithInteger:PRESENCE],
-                           @"topic" : topic,
-                           @"event" : event
+                           @"op" : [NSNumber numberWithInteger:OP_PRESENCE],
+                           @"topic" : topic
                            };
     [self send:dict];
     
@@ -220,7 +210,7 @@ int const DefaultReconnectDelay = 5000;
 
 #pragma mark - SRWebSocketDelegate
 
-- (void)webSocketDidOpen:(SRWebSocket *)newWebSocket {
+- (void) webSocketDidOpen:(SRWebSocket *) newWebSocket {
     
     [self sendStats];
     
@@ -229,7 +219,7 @@ int const DefaultReconnectDelay = 5000;
     }
 }
 
-- (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error {
+- (void) webSocket:(SRWebSocket *) webSocket didFailWithError:(NSError *) error {
     
     if ([self.delegate respondsToSelector:@selector(didErrorConnection:)]) {
         [self.delegate didErrorConnection:error];
@@ -238,7 +228,7 @@ int const DefaultReconnectDelay = 5000;
     [self reconnect];
 }
 
-- (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
+- (void) webSocket:(SRWebSocket *) webSocket didCloseWithCode:(NSInteger) code reason:(NSString *) reason wasClean:(BOOL) wasClean {
     
     NSMutableDictionary* details = [NSMutableDictionary dictionary];
     [details setValue:reason forKey:NSLocalizedDescriptionKey];
@@ -251,8 +241,8 @@ int const DefaultReconnectDelay = 5000;
     [self reconnect];
 }
 
-- (void)webSocket:(SRWebSocket *)webSocket didReceiveMessage:(id)message {
-   
+- (void) webSocket:(SRWebSocket *) webSocket didReceiveMessage:(id) message {
+    
     if([message isKindOfClass:[NSString class]]) {
         NSString *string = (NSString *) message;
         NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
@@ -272,7 +262,7 @@ int const DefaultReconnectDelay = 5000;
     if(operation[@"op"]) {
         
         [operation setObject:[self getOperationNameByCode:[operation[@"op"] intValue] ] forKey:@"name"];
-
+        
         if(operation[@"data"] && ![operation[@"data"] isEqualToString:@""]) {
             
             NSData *nsdataFromBase64String = [[NSData alloc] initWithBase64EncodedString:operation[@"data"] options:0];
@@ -280,7 +270,7 @@ int const DefaultReconnectDelay = 5000;
             [operation setObject:data forKey:@"data"];
         }
         
-        if([operation[@"op"] intValue] == BIND  && [Xserv isPrivateTopic:operation[@"topic"]] && [operation[@"rc"] intValue] == 1) {
+        if([operation[@"op"] intValue] == OP_SUBSCRIBE  && [Xserv isPrivateTopic:operation[@"topic"]] && [operation[@"rc"] intValue] == R_OK) {
             _userData = operation[@"data"];
         }
         
@@ -288,24 +278,26 @@ int const DefaultReconnectDelay = 5000;
             [self.delegate didReceiveOpsResponse:[operation copy]];
         }
     }
-    else if(operation[@"message"]) {
+    else {
         
         NSError *error;
-        id json = [NSJSONSerialization JSONObjectWithData:[operation[@"message"] dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+        id json = [NSJSONSerialization JSONObjectWithData:[operation[@"data"] dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         
         if(error != nil && json != nil) {
-            [operation setObject:json forKey:@"message"];
+            [operation setObject:json forKey:@"data"];
         }
         
-        if ([self.delegate respondsToSelector:@selector(didReceiveEvents:)]) {
-            [self.delegate didReceiveEvents:[operation copy]];
+        if ([self.delegate respondsToSelector:@selector(didReceiveMessages:)]) {
+            [self.delegate didReceiveMessages:[operation copy]];
         }
     }
 }
 
-- (void) send :(NSDictionary *) dictionary {
+- (void) send:(NSDictionary *) dictionary {
     
-    if([dictionary[@"op"] intValue] == BIND && dictionary[@"auth_endpoint"] && [Xserv isPrivateTopic:dictionary[@"topic"]])
+    if(![self isConnected]) return;
+    
+    if([dictionary[@"op"] intValue] == OP_SUBSCRIBE && dictionary[@"auth_endpoint"] && [Xserv isPrivateTopic:dictionary[@"topic"]])
     {
         NSDictionary *params = @{
                                  @"topic": dictionary[@"topic"],
@@ -329,24 +321,24 @@ int const DefaultReconnectDelay = 5000;
         
         NSURLSession *session = [NSURLSession sharedSession];
         [[session dataTaskWithRequest:request
-                completionHandler:^(NSData *data,
-                                    NSURLResponse *response,
-                                    NSError *error) {
-                 
-                    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                    NSMutableDictionary *newJson = [NSMutableDictionary dictionaryWithDictionary:dictionary];
-                    [newJson removeObjectForKey:@"auth_endpoint"];
-                    
-                    if(json) {
-                        [newJson setObject:params[@"user"] forKey:@"arg1"];
-                        [newJson setObject:json[@"data"] forKey:@"arg2"];
-                        [newJson setObject:json[@"sign"] forKey:@"arg3"];
-                    }
-                    
-                    NSString *s = [self jsonStringWithDict:newJson];
-                    [self.webSocket send:s];
-                    
-                }] resume];
+                    completionHandler:^(NSData *data,
+                                        NSURLResponse *response,
+                                        NSError *error) {
+                        
+                        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+                        NSMutableDictionary *newJson = [NSMutableDictionary dictionaryWithDictionary:dictionary];
+                        [newJson removeObjectForKey:@"auth_endpoint"];
+                        
+                        if(json) {
+                            [newJson setObject:params[@"user"] forKey:@"arg1"];
+                            [newJson setObject:json[@"data"] forKey:@"arg2"];
+                            [newJson setObject:json[@"sign"] forKey:@"arg3"];
+                        }
+                        
+                        NSString *s = [self jsonStringWithDict:newJson];
+                        [self.webSocket send:s];
+                        
+                    }] resume];
     }
     else
     {
@@ -357,20 +349,19 @@ int const DefaultReconnectDelay = 5000;
 
 + (BOOL) isPrivateTopic:(NSString *) topic {
     
-    if(topic.length >0 &&  [[topic substringToIndex:1] isEqualToString:@"@"])
+    if(topic.length > 0 &&  [[topic substringToIndex:1] isEqualToString:@"@"])
         return YES;
     
     return NO;
 }
 
--(NSString*) jsonStringWithDict:(NSDictionary *)dict {
-   
+- (NSString*) jsonStringWithDict:(NSDictionary *) dict {
+    
     NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict
-                                                       options:0
-                                                         error:&error];
-    if (! jsonData) {
-        NSLog(@"Error jsonString : error: %@", error.localizedDescription);
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:0 error:&error];
+    if (!jsonData) {
+        // NSLog(@"Error jsonString : error: %@", error.localizedDescription);
+        
         return @"{}";
     } else {
         return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
@@ -382,33 +373,33 @@ int const DefaultReconnectDelay = 5000;
     NSString *stringCode = @"";
     
     switch (code) {
-        case BIND:
-            stringCode = @"bind";
+        case OP_SUBSCRIBE:
+            stringCode = @"subscribe";
             break;
-        case UNBIND:
-            stringCode = @"unbind";
+        case OP_UNSUBSCRIBE:
+            stringCode = @"unsubscribe";
             break;
-        case HISTORY:
+        case OP_HISTORY:
             stringCode = @"history";
             break;
-        case PRESENCE:
+        case OP_PRESENCE:
             stringCode = @"presence";
             break;
-        case PRESENCE_IN:
-            stringCode = @"presence_in";
+        case OP_JOIN:
+            stringCode = @"join";
             break;
-        case PRESENCE_OUT:
-            stringCode = @"presence_out";
+        case OP_LEAVE:
+            stringCode = @"leave";
             break;
-        case TRIGGER:
-            stringCode = @"trigger";
+        case OP_PUBLISH:
+            stringCode = @"publish";
             break;
         default:
             break;
     }
     
     return stringCode;
-};
+}
 
 - (void) sendStats {
     
@@ -420,14 +411,16 @@ int const DefaultReconnectDelay = 5000;
     NSTimeZone* systemTimeZone = [NSTimeZone systemTimeZone];
     BOOL dstIsOn = [systemTimeZone isDaylightSavingTime];
     int dst = dstIsOn ? 1 : 0;
+    NSString *language = [[NSLocale preferredLanguages] objectAtIndex:0];
     
     NSDictionary *stats = @{
                             @"uuid" : deviceId,
                             @"model" : model,
                             @"os" : [NSString stringWithFormat:@"iOS %@", systemVersion],
-                            @"tz_offset" : [NSNumber numberWithLong:timezoneOffset],  
-                            @"tz_dst" : [NSNumber numberWithInt:dst]
-                           };
+                            @"tz_offset" : [NSNumber numberWithLong:timezoneOffset],
+                            @"tz_dst" : [NSNumber numberWithInt:dst],
+                            @"lang" : language
+                            };
     [self send:stats];
 }
 

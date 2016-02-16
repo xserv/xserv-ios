@@ -12,33 +12,35 @@ typedef enum XservResultCode : NSInteger {
     RC_OK = 1,
     RC_GENERIC_ERROR = 0,
     RC_ARGS_ERROR = -1,
-    RC_ALREADY_BINDED = -2,
+    RC_ALREADY_SUBSCRIBED = -2,
     RC_UNAUTHORIZED = -3,
-    RC_NO_EVENT = -4,
+    RC_NO_TOPIC = -4,
     RC_NO_DATA = -5,
     RC_NOT_PRIVATE = -6,
+    RC_LIMIT_MESSAGES = -7
 } XservResultCode;
 
 typedef enum XServOperationCode : NSInteger {
-    TRIGGER = 200,
-    BIND = 201,
-    UNBIND = 202,
-    HISTORY = 203,
-    PRESENCE = 204,
-    PRESENCE_IN = BIND + 200,
-    PRESENCE_OUT = UNBIND + 200
+    OP_PUBLISH = 200,
+    OP_SUBSCRIBE = 201,
+    OP_UNSUBSCRIBE = 202,
+    OP_HISTORY = 203,
+    OP_PRESENCE = 204,
+    OP_JOIN = OP_SUBSCRIBE + 200,
+    OP_LEAVE = OP_UNSUBSCRIBE + 200
 } XServOperationCode;
 
 
 @protocol XservDelegate <NSObject>
 
-- (void) didReceiveEvents:(NSDictionary *)message;
-- (void) didReceiveOpsResponse:(NSDictionary *)message;
+- (void) didReceiveMessages:(NSDictionary *) json;
+- (void) didReceiveOpsResponse:(NSDictionary *) json;
 
 @optional
 - (void) didOpenConnection;
-- (void) didErrorConnection:(NSError *)reason;
-- (void) didCloseConnection:(NSError *)reason;
+- (void) didErrorConnection:(NSError *) reason;
+- (void) didCloseConnection:(NSError *) reason;
+
 @end
 
 @interface Xserv : NSObject
@@ -47,21 +49,20 @@ typedef enum XServOperationCode : NSInteger {
 @property long reconnectInterval;
 @property (nonatomic, strong, readonly) NSDictionary *userData;
 
-- (instancetype)initWithAppId:(NSString *) app_id;
+- (instancetype) initWithAppId:(NSString *) app_id;
 - (void) connect;
 - (void) disconnect;
 - (BOOL) isConnected;
-- (NSString *) bindOnTopic:(NSString *) topic withEvent:(NSString *) event withAuthEndpoint:(NSDictionary *) auth_endpoint;
-- (NSString *) bindOnTopic:(NSString *) topic withEvent:(NSString *) event;
-- (NSString *) unbindOnTopic:(NSString *) topic withEvent:(NSString *) event;
-- (NSString *) unbindOnTopic:(NSString *) topic;
-- (NSString *) triggerString:(NSString *) message onTopic:(NSString *) topic withEvent:(NSString *) event;
-- (NSString *) triggerJSON:(NSDictionary *) message onTopic:(NSString *) topic withEvent:(NSString *) event;
-- (NSString *) historyByIdOnTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset withLimit:(int) limit;
-- (NSString *) historyByIdOnTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset;
-- (NSString *) historyByTimeStampOnTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset withLimit:(int) limit;
-- (NSString *) historyByTimeStampOnTopic:(NSString *)topic withEvent:(NSString *) event withOffset:(int) offset;
-- (NSString *) presenceOnTopic:(NSString *) topic withEvent:(NSString *) event;
+- (NSString *) subscribeOnTopic:(NSString *) topic withAuthEndpoint:(NSDictionary *) auth_endpoint;
+- (NSString *) subscribeOnTopic:(NSString *) topic;
+- (NSString *) unsubscribeOnTopic:(NSString *) topic;
+- (NSString *) publishString:(NSString *) data onTopic:(NSString *) topic;
+- (NSString *) publishJSON:(NSDictionary *) data onTopic:(NSString *) topic;
+- (NSString *) historyByIdOnTopic:(NSString *) topic withOffset:(int) offset withLimit:(int) limit;
+- (NSString *) historyByIdOnTopic:(NSString *) topic withOffset:(int) offset;
+- (NSString *) historyByTimeStampOnTopic:(NSString *) topic withOffset:(int) offset withLimit:(int) limit;
+- (NSString *) historyByTimeStampOnTopic:(NSString *) topic withOffset:(int) offset;
+- (NSString *) presenceOnTopic:(NSString *) topic;
 
 + (BOOL) isPrivateTopic:(NSString *) topic;
 
