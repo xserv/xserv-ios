@@ -10,7 +10,7 @@
 #import <XServ/Xserv.h>
 
 static NSString *APP_ID = @"9Pf80-3";
-static NSString *kCellEvents = @"CellEvents"
+static NSString *kCellEvents = @"CellEvents";
 static NSString *kCellOperations = @"CellOperations";
 
 @interface XservViewController ()  <XservDelegate, UITextFieldDelegate>
