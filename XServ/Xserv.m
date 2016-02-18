@@ -11,12 +11,14 @@
 #import <UIKit/UIKit.h>
 #import "UIDevice-Hardware.h"
 
+NSString *const VERSION = @"1.0.0";
+
 NSString *const ADDRESS = @"xserv.mobile-italia.com";
 NSString *const PORT = @"4332";
 NSString *const HISTORY_ID = @"id";
 NSString *const HISTORY_TIMESTAMP = @"timestamp";
 NSString *const XServErrorDomain = @"XServErrorDomain";
-int const DefaultReconnectDelay = 5000;
+const int DefaultReconnectDelay = 5000;
 
 @interface Xserv () <SRWebSocketDelegate>
 
@@ -46,9 +48,11 @@ int const DefaultReconnectDelay = 5000;
     self.webSocket.delegate = nil;
     self.webSocket = nil;
     
-    NSString *urlString = [NSString stringWithFormat:@"ws://%@:%@/ws/%@", ADDRESS, PORT, self.appId];
+    NSString *urlString = [NSString stringWithFormat:@"ws://%@:%@/ws/%@?version=%@", ADDRESS, PORT, self.appId, VERSION];
+    
     self.webSocket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
     self.webSocket.delegate = self;
+    
     [self.webSocket open];
 }
 
@@ -68,6 +72,17 @@ int const DefaultReconnectDelay = 5000;
 - (BOOL) isConnected {
     
     return self.webSocket && self.webSocket.readyState == SR_OPEN;
+}
+
+- (NSString *) socketId {
+    
+    if (_userData) {
+        NSString *socket_id = _userData[@"socket_id"];
+        if (socket_id) {
+            return socket_id;
+        }
+    }
+    return @"";
 }
 
 - (void) reconnect {
@@ -212,11 +227,7 @@ int const DefaultReconnectDelay = 5000;
 
 - (void) webSocketDidOpen:(SRWebSocket *) newWebSocket {
     
-    [self sendStats];
-    
-    if ([self.delegate respondsToSelector:@selector(didOpenConnection)]) {
-        [self.delegate didOpenConnection];
-    }
+    [self handshake]; // connect open on finish handshake
 }
 
 - (void) webSocket:(SRWebSocket *) webSocket didFailWithError:(NSError *) error {
@@ -230,11 +241,11 @@ int const DefaultReconnectDelay = 5000;
 
 - (void) webSocket:(SRWebSocket *) webSocket didCloseWithCode:(NSInteger) code reason:(NSString *) reason wasClean:(BOOL) wasClean {
     
-    NSMutableDictionary* details = [NSMutableDictionary dictionary];
-    [details setValue:reason forKey:NSLocalizedDescriptionKey];
-    NSError *error = [NSError errorWithDomain:XServErrorDomain code:code userInfo:details];
-    
     if ([self.delegate respondsToSelector:@selector(didCloseConnection:)]) {
+        NSMutableDictionary* details = [NSMutableDictionary dictionary];
+        [details setValue:reason forKey:NSLocalizedDescriptionKey];
+        NSError *error = [NSError errorWithDomain:XServErrorDomain code:code userInfo:details];
+        
         [self.delegate didCloseConnection:error];
     }
     
@@ -246,10 +257,13 @@ int const DefaultReconnectDelay = 5000;
     if([message isKindOfClass:[NSString class]]) {
         NSString *string = (NSString *) message;
         NSData *data = [string dataUsingEncoding:NSUTF8StringEncoding];
-        NSError *jsonParsingError = nil;
-        NSDictionary *obj = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonParsingError];
         
-        [self manageMessage:obj];
+        NSError *error = nil;
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error];
+        
+        if(error == nil && json != nil) {
+            [self manageMessage:json];
+        }
     }
 }
 
@@ -259,36 +273,84 @@ int const DefaultReconnectDelay = 5000;
     
     NSMutableDictionary *operation = [NSMutableDictionary dictionaryWithDictionary:json];
     
-    if(operation[@"op"]) {
-        
-        [operation setObject:[self getOperationNameByCode:[operation[@"op"] intValue] ] forKey:@"name"];
-        
-        if(operation[@"data"] && ![operation[@"data"] isEqualToString:@""]) {
-            
-            NSData *nsdataFromBase64String = [[NSData alloc] initWithBase64EncodedString:operation[@"data"] options:0];
-            NSDictionary *data = [NSJSONSerialization JSONObjectWithData:nsdataFromBase64String options:0 error:nil];
-            [operation setObject:data forKey:@"data"];
-        }
-        
-        if([operation[@"op"] intValue] == OP_SUBSCRIBE  && [Xserv isPrivateTopic:operation[@"topic"]] && [operation[@"rc"] intValue] == R_OK) {
-            _userData = operation[@"data"];
-        }
-        
-        if ([self.delegate respondsToSelector:@selector(didReceiveOpsResponse:)]) {
-            [self.delegate didReceiveOpsResponse:[operation copy]];
-        }
-    }
-    else {
+    if(!operation[@"op"]) {
         
         NSError *error;
         id json = [NSJSONSerialization JSONObjectWithData:[operation[@"data"] dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
         
-        if(error != nil && json != nil) {
+        if(error == nil && json != nil) {
             [operation setObject:json forKey:@"data"];
         }
         
         if ([self.delegate respondsToSelector:@selector(didReceiveMessages:)]) {
             [self.delegate didReceiveMessages:[operation copy]];
+        }
+    }
+    else {
+        
+        [operation setObject:[self getOperationNameByCode:[operation[@"op"] intValue]] forKey:@"name"];
+        
+        if([operation[@"op"] intValue] == OP_HANDSHAKE) {
+            
+            if([operation[@"rc"] intValue] == RC_OK) {
+                
+                if(operation[@"data"] && ![operation[@"data"] isEqualToString:@""]) {
+                    NSData *nsdataFromBase64String = [[NSData alloc] initWithBase64EncodedString:operation[@"data"] options:0];
+                    
+                    NSError *error;
+                    id data = [NSJSONSerialization JSONObjectWithData:nsdataFromBase64String options:0 error:&error];
+                    
+                    if(error == nil && data != nil) {
+                        _userData = data;
+                    }
+                }
+                
+                if(_userData) {
+                    if ([self.delegate respondsToSelector:@selector(didOpenConnection)]) {
+                        [self.delegate didOpenConnection];
+                    }
+                }
+                else {
+                    if ([self.delegate respondsToSelector:@selector(didErrorConnection:)]) {
+                        NSMutableDictionary* details = [NSMutableDictionary dictionary];
+                        [details setValue:operation[@"descr"] forKey:NSLocalizedDescriptionKey];
+                        NSError *error = [NSError errorWithDomain:XServErrorDomain code:[operation[@"rc"] intValue] userInfo:details];
+                        
+                        [self.delegate didErrorConnection:error];
+                    }
+                }
+            }
+            else {
+                
+                if ([self.delegate respondsToSelector:@selector(didErrorConnection:)]) {
+                    NSMutableDictionary* details = [NSMutableDictionary dictionary];
+                    [details setValue:operation[@"descr"] forKey:NSLocalizedDescriptionKey];
+                    NSError *error = [NSError errorWithDomain:XServErrorDomain code:[operation[@"rc"] intValue] userInfo:details];
+                    
+                    [self.delegate didErrorConnection:error];
+                }
+            }
+        }
+        else {
+            
+            if(operation[@"data"] && ![operation[@"data"] isEqualToString:@""]) {
+                NSData *nsdataFromBase64String = [[NSData alloc] initWithBase64EncodedString:operation[@"data"] options:0];
+                
+                NSError *error;
+                id data = [NSJSONSerialization JSONObjectWithData:nsdataFromBase64String options:0 error:&error];
+                
+                if(error == nil && data != nil) {
+                    [operation setObject:data forKey:@"data"];
+                    
+                    if([operation[@"op"] intValue] == OP_SUBSCRIBE  && [Xserv isPrivateTopic:operation[@"topic"]] && [operation[@"rc"] intValue] == RC_OK) {
+                        _userData = data;
+                    }
+                }
+            }
+            
+            if ([self.delegate respondsToSelector:@selector(didReceiveOpsResponse:)]) {
+                [self.delegate didReceiveOpsResponse:[operation copy]];
+            }
         }
     }
 }
@@ -300,6 +362,7 @@ int const DefaultReconnectDelay = 5000;
     if([dictionary[@"op"] intValue] == OP_SUBSCRIBE && dictionary[@"auth_endpoint"] && [Xserv isPrivateTopic:dictionary[@"topic"]])
     {
         NSDictionary *params = @{
+                                 @"socket_id": [self socketId],
                                  @"topic": dictionary[@"topic"],
                                  @"user": dictionary[@"auth_endpoint"][@"user"],
                                  @"pass": dictionary[@"auth_endpoint"][@"pass"]
@@ -325,23 +388,32 @@ int const DefaultReconnectDelay = 5000;
                                         NSURLResponse *response,
                                         NSError *error) {
                         
-                        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
-                        NSMutableDictionary *newJson = [NSMutableDictionary dictionaryWithDictionary:dictionary];
-                        [newJson removeObjectForKey:@"auth_endpoint"];
+                        NSError *error2 = nil;
+                        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:data options:0 error:&error2];
                         
-                        if(json) {
-                            [newJson setObject:params[@"user"] forKey:@"arg1"];
-                            [newJson setObject:json[@"data"] forKey:@"arg2"];
-                            [newJson setObject:json[@"sign"] forKey:@"arg3"];
+                        if(error2 == nil && json != nil) {
+                            
+                            NSMutableDictionary *newJson = [NSMutableDictionary dictionaryWithDictionary:dictionary];
+                            [newJson removeObjectForKey:@"auth_endpoint"];
+                            
+                            if(json) {
+                                [newJson setObject:params[@"user"] forKey:@"arg1"];
+                                [newJson setObject:json[@"data"] forKey:@"arg2"];
+                                [newJson setObject:json[@"sign"] forKey:@"arg3"];
+                            }
+                            
+                            NSString *s = [self jsonStringWithDict:newJson];
+                            [self.webSocket send:s];
+                            
+                        } else {
+                            
+                            NSString *s = [self jsonStringWithDict:dictionary];
+                            [self.webSocket send:s];
                         }
-                        
-                        NSString *s = [self jsonStringWithDict:newJson];
-                        [self.webSocket send:s];
                         
                     }] resume];
     }
-    else
-    {
+    else {
         NSString *s = [self jsonStringWithDict:dictionary];
         [self.webSocket send:s];
     }
@@ -359,7 +431,7 @@ int const DefaultReconnectDelay = 5000;
     
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:0 error:&error];
-    if (!jsonData) {
+    if (error != nil || !jsonData) {
         // NSLog(@"Error jsonString : error: %@", error.localizedDescription);
         
         return @"{}";
@@ -394,6 +466,9 @@ int const DefaultReconnectDelay = 5000;
         case OP_PUBLISH:
             stringCode = @"publish";
             break;
+        case OP_HANDSHAKE:
+            stringCode = @"handshake";
+            break;
         default:
             break;
     }
@@ -401,7 +476,7 @@ int const DefaultReconnectDelay = 5000;
     return stringCode;
 }
 
-- (void) sendStats {
+- (void) handshake {
     
     NSUUID *oNSUUID = [[UIDevice currentDevice] identifierForVendor];
     NSString *deviceId = [oNSUUID UUIDString];

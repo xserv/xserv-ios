@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+extern NSString *const VERSION;
+
 typedef enum XservResultCode : NSInteger {
     RC_OK = 1,
     RC_GENERIC_ERROR = 0,
@@ -21,6 +23,7 @@ typedef enum XservResultCode : NSInteger {
 } XservResultCode;
 
 typedef enum XServOperationCode : NSInteger {
+    OP_HANDSHAKE = 100,
     OP_PUBLISH = 200,
     OP_SUBSCRIBE = 201,
     OP_UNSUBSCRIBE = 202,
@@ -53,6 +56,7 @@ typedef enum XServOperationCode : NSInteger {
 - (void) connect;
 - (void) disconnect;
 - (BOOL) isConnected;
+- (NSString *) socketId;
 - (NSString *) subscribeOnTopic:(NSString *) topic withAuthEndpoint:(NSDictionary *) auth_endpoint;
 - (NSString *) subscribeOnTopic:(NSString *) topic;
 - (NSString *) unsubscribeOnTopic:(NSString *) topic;
