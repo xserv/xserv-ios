@@ -33,7 +33,6 @@ typedef enum XServOperationCode : NSInteger {
     OP_LEAVE = OP_UNSUBSCRIBE + 200
 } XServOperationCode;
 
-
 @protocol XservDelegate <NSObject>
 
 - (void) didReceiveMessages:(NSDictionary *) json;

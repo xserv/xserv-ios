@@ -77,7 +77,7 @@ const int DefaultReconnectDelay = 5000;
 - (NSString *) socketId {
     
     if (_userData) {
-        NSString *socket_id = _userData[@"socket_id"];
+        NSString *socket_id = self.userData[@"socket_id"];
         if (socket_id) {
             return socket_id;
         }
