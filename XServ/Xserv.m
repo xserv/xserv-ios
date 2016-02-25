@@ -76,7 +76,7 @@ const int DefaultReconnectDelay = 5000;
 
 - (NSString *) socketId {
     
-    if (_userData) {
+    if (self.userData) {
         NSString *socket_id = self.userData[@"socket_id"];
         if (socket_id) {
             return socket_id;
@@ -305,7 +305,7 @@ const int DefaultReconnectDelay = 5000;
                     }
                 }
                 
-                if(_userData) {
+                if(self.userData) {
                     if ([self.delegate respondsToSelector:@selector(didOpenConnection)]) {
                         [self.delegate didOpenConnection];
                     }
