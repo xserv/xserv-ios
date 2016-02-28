@@ -126,20 +126,22 @@ class ViewController: UIViewController, XservDelegate, UITableViewDelegate, UITa
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        var cell : UITableViewCell?
+        var cell : UITableViewCell!
         
         if tableView == self.tableOperations {
             cell = tableView.dequeueReusableCellWithIdentifier(kCellOperations, forIndexPath: indexPath)
             let mess = self.operations[indexPath.row]
+            cell.textLabel!.font = UIFont.systemFontOfSize(8)
             cell?.textLabel?.text = mess.description
         }
         else if tableView == self.tableEvents {
             cell = tableView.dequeueReusableCellWithIdentifier(kCellEvents, forIndexPath: indexPath)
             let mess = self.messages[indexPath.row]
+            cell.textLabel!.font = UIFont.systemFontOfSize(8)
             cell?.textLabel?.text = mess.description
         }
         
-        return cell!
+        return cell
     }
 }
 
