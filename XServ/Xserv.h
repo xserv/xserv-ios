@@ -58,6 +58,7 @@ typedef enum XServOperationCode : NSInteger {
 - (void) disconnect;
 - (BOOL) isConnected;
 - (NSString *) socketId;
+- (void) disableTLS;
 - (NSString *) subscribeOnTopic:(NSString *) topic withAuthEndpoint:(NSDictionary *) auth_endpoint;
 - (NSString *) subscribeOnTopic:(NSString *) topic;
 - (NSString *) unsubscribeOnTopic:(NSString *) topic;

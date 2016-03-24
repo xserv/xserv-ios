@@ -13,8 +13,9 @@
 
 NSString *const VERSION = @"1.0.0";
 
-NSString *const ADDRESS = @"mobile-italia.com";
+NSString *const HOST = @"mobile-italia.com";
 NSString *const PORT = @"4332";
+NSString *const TLS_PORT = @"8332";
 NSString *const XServErrorDomain = @"XServErrorDomain";
 const int DefaultReconnectDelay = 5000;
 
@@ -22,6 +23,7 @@ const int DefaultReconnectDelay = 5000;
 
 @property (nonatomic, strong) SRWebSocket *webSocket;
 @property (nonatomic, strong) NSString *appId;
+@property (nonatomic) BOOL secure;
 
 @end
 
@@ -33,6 +35,9 @@ const int DefaultReconnectDelay = 5000;
     self = [super init];
     if (self) {
         self.appId = app_id;
+        
+        // TLS
+        self.secure = NO; // mettere YES, ho messo no perche non funziona https, wss funziona
     }
     return self;
 }
@@ -46,7 +51,7 @@ const int DefaultReconnectDelay = 5000;
     self.webSocket.delegate = nil;
     self.webSocket = nil;
     
-    NSString *urlString = [NSString stringWithFormat:@"ws://%@:%@/ws/%@?version=%@", ADDRESS, PORT, self.appId, VERSION];
+    NSString *urlString = [NSString stringWithFormat:@"ws%@://%@:%@/ws/%@?version=%@", self.secure ? @"s" : @"", HOST, self.secure ? TLS_PORT : PORT, self.appId, VERSION];
     
     self.webSocket = [[SRWebSocket alloc] initWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
     self.webSocket.delegate = self;
@@ -70,6 +75,10 @@ const int DefaultReconnectDelay = 5000;
 - (BOOL) isConnected {
     
     return self.webSocket && self.webSocket.readyState == SR_OPEN;
+}
+
+- (void) disableTLS {
+    self.secure = NO;
 }
 
 - (NSString *) socketId {
@@ -364,7 +373,7 @@ const int DefaultReconnectDelay = 5000;
             urlString = dictionary[@"auth_endpoint"][@"endpoint"];
         }
         else {
-            urlString = [NSString stringWithFormat:@"http://%@:%@/app/%@/auth_user", ADDRESS, PORT, self.appId];
+            urlString = [NSString stringWithFormat:@"http%@://%@:%@/app/%@/auth_user", self.secure ? @"s" : @"", HOST, self.secure ? TLS_PORT : PORT, self.appId];
         }
         
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
