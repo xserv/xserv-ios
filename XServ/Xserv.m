@@ -263,15 +263,6 @@ const int DefaultReconnectDelay = 5000;
     if(!operation[@"op"]) {
         // messages
         
-        if ([operation[@"data"] isKindOfClass:[NSString class]]) {
-            NSError *error;
-            id json = [NSJSONSerialization JSONObjectWithData:[operation[@"data"] dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-            
-            if(error == nil && json != nil) {
-                [operation setObject:json forKey:@"data"];
-            }
-        }
-        
         if ([self.delegate respondsToSelector:@selector(didReceiveMessages:)]) {
             [self.delegate didReceiveMessages:[operation copy]];
         }
@@ -330,22 +321,6 @@ const int DefaultReconnectDelay = 5000;
                 if(error == nil && data != nil) {
                     _userData = data;
                 }
-            } else if([operation[@"op"] intValue] == OP_HISTORY && [operation[@"rc"] intValue] == RC_OK) {
-                /*
-                 non si puo' fare perche' la lista non e' immutable. Pero' se tutti manda oggetti corretti saranno corretti al ritorno.
-                 testato!
-                 
-                 for (NSMutableDictionary *msg in operation[@"data"]) {
-                    if ([msg[@"data"] isKindOfClass:[NSString class]]) {
-                        NSError *error;
-                        id json = [NSJSONSerialization JSONObjectWithData:[msg[@"data"] dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-                        
-                        if(error == nil && json != nil) {
-                            [msg setObject:json forKey:@"data"];
-                        }
-                    }
-                }
-                 */
             }
             
             if ([self.delegate respondsToSelector:@selector(didReceiveOperations:)]) {

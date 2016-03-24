@@ -70,7 +70,7 @@ static NSString *kCellOperations = @"CellOperations";
         id tmp = [NSJSONSerialization JSONObjectWithData:objectData options:0 error:&error];
         
         if(error == nil && tmp != nil) {
-            data = tmp;
+            //data = tmp;
         }
         
         [self.xserv publish:data onTopic:self.textTopic.text];
