@@ -61,17 +61,26 @@ static NSString *kCellOperations = @"CellOperations";
 }
 
 - (IBAction)onTapPublish:(id)sender {
-    
-    [self.xserv publishString:self.textMessage.text onTopic:self.textTopic.text];
-}
-
-- (IBAction)onTapHistoryById:(id)sender {
-    
-    [self.xserv historyByIdOnTopic:self.textTopic.text withOffset:[self.textOffset.text intValue] withLimit:[self.textLimit.text intValue]];
+    if ([self.textMessage.text length] > 0) {
+        id data = self.textMessage.text;
+        
+        NSData *objectData = [data dataUsingEncoding:NSUTF8StringEncoding];
+        
+        NSError *error;
+        id tmp = [NSJSONSerialization JSONObjectWithData:objectData options:0 error:&error];
+        
+        if(error == nil && tmp != nil) {
+            data = tmp;
+        }
+        
+        [self.xserv publish:data onTopic:self.textTopic.text];
+        
+        self.textMessage.text = @"";
+    }
 }
 
 - (IBAction)onTapHistoryByTimeStamo:(id)sender {
-    [self.xserv historyByTimeStampOnTopic:self.textTopic.text withOffset:[self.textOffset.text intValue] withLimit:[self.textLimit.text intValue]];
+    [self.xserv historyOnTopic:self.textTopic.text withOffset:[self.textOffset.text intValue] withLimit:[self.textLimit.text intValue]];
 }
 
 - (IBAction)onTapPrivateSubscribe:(id)sender {
@@ -86,7 +95,7 @@ static NSString *kCellOperations = @"CellOperations";
 
 - (IBAction)onTapPresence:(id)sender {
     
-    [self.xserv presenceOnTopic:self.textTopic.text];
+    [self.xserv usersOnTopic:self.textTopic.text];
     
 }
 
@@ -100,7 +109,7 @@ static NSString *kCellOperations = @"CellOperations";
     [self.tableViewMessages reloadData];
 }
 
-- (void) didReceiveOpsResponse:(NSDictionary *)json {
+- (void) didReceiveOperations:(NSDictionary *)json {
     
     NSLog(@"operation: %@", json);
     

@@ -13,10 +13,8 @@
 
 NSString *const VERSION = @"1.0.0";
 
-NSString *const ADDRESS = @"xserv.mobile-italia.com";
+NSString *const ADDRESS = @"mobile-italia.com";
 NSString *const PORT = @"4332";
-NSString *const HISTORY_ID = @"id";
-NSString *const HISTORY_TIMESTAMP = @"timestamp";
 NSString *const XServErrorDomain = @"XServErrorDomain";
 const int DefaultReconnectDelay = 5000;
 
@@ -137,7 +135,7 @@ const int DefaultReconnectDelay = 5000;
     return UUID;
 }
 
-- (NSString *) historyByIdOnTopic:(NSString *) topic withOffset:(int) offset withLimit:(int) limit {
+- (NSString *) historyOnTopic:(NSString *) topic withOffset:(int) offset withLimit:(int) limit {
     
     if(![self isConnected]) return nil;
     
@@ -147,45 +145,15 @@ const int DefaultReconnectDelay = 5000;
                            @"uuid" : UUID,
                            @"op" : [NSNumber numberWithInteger:OP_HISTORY],
                            @"topic" : topic,
-                           @"arg1" : HISTORY_ID,
-                           @"arg2" : [NSString stringWithFormat:@"%i", offset],
-                           @"arg3" : [NSString stringWithFormat:@"%i", limit]
+                           @"arg1" : [NSString stringWithFormat:@"%i", offset],
+                           @"arg2" : [NSString stringWithFormat:@"%i", limit]
                            };
     [self send:dict];
     
     return UUID;
 }
 
-- (NSString *) historyByIdOnTopic:(NSString *) topic withOffset:(int) offset {
-    
-    return [self historyByIdOnTopic:topic withOffset:offset withLimit:0];
-}
-
-- (NSString *) historyByTimeStampOnTopic:(NSString *) topic withOffset:(int) offset withLimit:(int) limit {
-    
-    if(![self isConnected]) return nil;
-    
-    NSString *UUID = [[NSUUID UUID] UUIDString];
-    
-    NSDictionary *dict = @{
-                           @"uuid" : UUID,
-                           @"op" : [NSNumber numberWithInteger:OP_HISTORY],
-                           @"topic" : topic,
-                           @"arg1" : HISTORY_TIMESTAMP,
-                           @"arg2" : [NSString stringWithFormat:@"%i", offset],
-                           @"arg3" : [NSString stringWithFormat:@"%i", limit]
-                           };
-    [self send:dict];
-    
-    return UUID;
-}
-
-- (NSString *) historyByTimeStampOnTopic:(NSString *) topic withOffset:(int) offset {
-    
-    return [self historyByTimeStampOnTopic:topic withOffset:offset withLimit:0];
-}
-
-- (NSString *) publishString:(NSString *) data onTopic:(NSString *) topic {
+- (NSString *) publish:(id) data onTopic:(NSString *) topic {
     
     if(![self isConnected]) return nil;
     
@@ -202,12 +170,7 @@ const int DefaultReconnectDelay = 5000;
     return UUID;
 }
 
-- (NSString *) publishJSON:(NSDictionary *) data onTopic:(NSString *) topic  {
-    
-    return  [self publishString:[self jsonStringWithDict:data] onTopic:topic];
-}
-
-- (NSString *) presenceOnTopic:(NSString *) topic {
+- (NSString *) usersOnTopic:(NSString *) topic {
     
     if(![self isConnected]) return nil;
     
@@ -215,8 +178,23 @@ const int DefaultReconnectDelay = 5000;
     
     NSDictionary *dict = @{
                            @"uuid" : UUID,
-                           @"op" : [NSNumber numberWithInteger:OP_PRESENCE],
+                           @"op" : [NSNumber numberWithInteger:OP_USERS],
                            @"topic" : topic
+                           };
+    [self send:dict];
+    
+    return UUID;
+}
+
+- (NSString *) topics {
+    
+    if(![self isConnected]) return nil;
+    
+    NSString *UUID = [[NSUUID UUID] UUIDString];
+    
+    NSDictionary *dict = @{
+                           @"uuid" : UUID,
+                           @"op" : [NSNumber numberWithInteger:OP_TOPICS]
                            };
     [self send:dict];
     
@@ -274,12 +252,15 @@ const int DefaultReconnectDelay = 5000;
     NSMutableDictionary *operation = [NSMutableDictionary dictionaryWithDictionary:json];
     
     if(!operation[@"op"]) {
+        // messages
         
-        NSError *error;
-        id json = [NSJSONSerialization JSONObjectWithData:[operation[@"data"] dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
-        
-        if(error == nil && json != nil) {
-            [operation setObject:json forKey:@"data"];
+        if ([operation[@"data"] isKindOfClass:[NSString class]]) {
+            NSError *error;
+            id json = [NSJSONSerialization JSONObjectWithData:[operation[@"data"] dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+            
+            if(error == nil && json != nil) {
+                [operation setObject:json forKey:@"data"];
+            }
         }
         
         if ([self.delegate respondsToSelector:@selector(didReceiveMessages:)]) {
@@ -287,25 +268,28 @@ const int DefaultReconnectDelay = 5000;
         }
     }
     else {
+        // operations
+        
+        NSData *nsdataFromBase64String = [[NSData alloc] initWithBase64EncodedString:operation[@"data"] options:0];
+        [operation setObject:[[NSString alloc] initWithData:nsdataFromBase64String encoding:NSUTF8StringEncoding] forKey:@"data"];
+        
+        NSError *error;
+        id data = [NSJSONSerialization JSONObjectWithData:nsdataFromBase64String options:0 error:&error];
+        
+        if(error == nil && data != nil) {
+            [operation setObject:data forKey:@"data"];
+        }
         
         [operation setObject:[self getOperationNameByCode:[operation[@"op"] intValue]] forKey:@"name"];
         
         if([operation[@"op"] intValue] == OP_HANDSHAKE) {
+            // handshake
             
             if([operation[@"rc"] intValue] == RC_OK) {
-                
-                if(operation[@"data"] && ![operation[@"data"] isEqualToString:@""]) {
-                    NSData *nsdataFromBase64String = [[NSData alloc] initWithBase64EncodedString:operation[@"data"] options:0];
+                // se prima non ha dato errore il decode/serialization
+                if(error == nil && data != nil) {
+                    _userData = data;
                     
-                    NSError *error;
-                    id data = [NSJSONSerialization JSONObjectWithData:nsdataFromBase64String options:0 error:&error];
-                    
-                    if(error == nil && data != nil) {
-                        _userData = data;
-                    }
-                }
-                
-                if(self.userData) {
                     if ([self.delegate respondsToSelector:@selector(didOpenConnection)]) {
                         [self.delegate didOpenConnection];
                     }
@@ -321,7 +305,6 @@ const int DefaultReconnectDelay = 5000;
                 }
             }
             else {
-                
                 if ([self.delegate respondsToSelector:@selector(didErrorConnection:)]) {
                     NSMutableDictionary* details = [NSMutableDictionary dictionary];
                     [details setValue:operation[@"descr"] forKey:NSLocalizedDescriptionKey];
@@ -332,24 +315,32 @@ const int DefaultReconnectDelay = 5000;
             }
         }
         else {
+            // classic operations
             
-            if(operation[@"data"] && ![operation[@"data"] isEqualToString:@""]) {
-                NSData *nsdataFromBase64String = [[NSData alloc] initWithBase64EncodedString:operation[@"data"] options:0];
-                
-                NSError *error;
-                id data = [NSJSONSerialization JSONObjectWithData:nsdataFromBase64String options:0 error:&error];
-                
+            if([operation[@"op"] intValue] == OP_SUBSCRIBE  && [Xserv isPrivateTopic:operation[@"topic"]] && [operation[@"rc"] intValue] == RC_OK) {
                 if(error == nil && data != nil) {
-                    [operation setObject:data forKey:@"data"];
-                    
-                    if([operation[@"op"] intValue] == OP_SUBSCRIBE  && [Xserv isPrivateTopic:operation[@"topic"]] && [operation[@"rc"] intValue] == RC_OK) {
-                        _userData = data;
+                    _userData = data;
+                }
+            } else if([operation[@"op"] intValue] == OP_HISTORY && [operation[@"rc"] intValue] == RC_OK) {
+                /*
+                 non si puo' fare perche' la lista non e' immutable. Pero' se tutti manda oggetti corretti saranno corretti al ritorno.
+                 testato!
+                 
+                 for (NSMutableDictionary *msg in operation[@"data"]) {
+                    if ([msg[@"data"] isKindOfClass:[NSString class]]) {
+                        NSError *error;
+                        id json = [NSJSONSerialization JSONObjectWithData:[msg[@"data"] dataUsingEncoding:NSUTF8StringEncoding] options:0 error:&error];
+                        
+                        if(error == nil && json != nil) {
+                            [msg setObject:json forKey:@"data"];
+                        }
                     }
                 }
+                 */
             }
             
-            if ([self.delegate respondsToSelector:@selector(didReceiveOpsResponse:)]) {
-                [self.delegate didReceiveOpsResponse:[operation copy]];
+            if ([self.delegate respondsToSelector:@selector(didReceiveOperations:)]) {
+                [self.delegate didReceiveOperations:[operation copy]];
             }
         }
     }
@@ -454,8 +445,8 @@ const int DefaultReconnectDelay = 5000;
         case OP_HISTORY:
             stringCode = @"history";
             break;
-        case OP_PRESENCE:
-            stringCode = @"presence";
+        case OP_USERS:
+            stringCode = @"users";
             break;
         case OP_JOIN:
             stringCode = @"join";
@@ -468,6 +459,9 @@ const int DefaultReconnectDelay = 5000;
             break;
         case OP_HANDSHAKE:
             stringCode = @"handshake";
+            break;
+        case OP_TOPICS:
+            stringCode = @"topics";
             break;
         default:
             break;

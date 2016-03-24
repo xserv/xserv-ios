@@ -24,7 +24,6 @@
 - (IBAction)onTapSubscribe:(id)sender;
 - (IBAction)onTapUnSubscribe:(id)sender;
 - (IBAction)onTapPublish:(id)sender;
-- (IBAction)onTapHistoryById:(id)sender;
 - (IBAction)onTapHistoryByTimeStamo:(id)sender;
 - (IBAction)onTapPrivateSubscribe:(id)sender;
 - (IBAction)onTapPresence:(id)sender;

@@ -19,7 +19,8 @@ typedef enum XservResultCode : NSInteger {
     RC_NO_TOPIC = -4,
     RC_NO_DATA = -5,
     RC_NOT_PRIVATE = -6,
-    RC_LIMIT_MESSAGES = -7
+    RC_LIMIT_MESSAGES = -7,
+    RC_DATA_ERROR = -8
 } XservResultCode;
 
 typedef enum XServOperationCode : NSInteger {
@@ -28,15 +29,16 @@ typedef enum XServOperationCode : NSInteger {
     OP_SUBSCRIBE = 201,
     OP_UNSUBSCRIBE = 202,
     OP_HISTORY = 203,
-    OP_PRESENCE = 204,
-    OP_JOIN = OP_SUBSCRIBE + 200,
-    OP_LEAVE = OP_UNSUBSCRIBE + 200
+    OP_USERS = 204,
+    OP_TOPICS = 205,
+    OP_JOIN = 401,
+    OP_LEAVE = 402
 } XServOperationCode;
 
 @protocol XservDelegate <NSObject>
 
 - (void) didReceiveMessages:(NSDictionary *) json;
-- (void) didReceiveOpsResponse:(NSDictionary *) json;
+- (void) didReceiveOperations:(NSDictionary *) json;
 
 @optional
 - (void) didOpenConnection;
@@ -59,13 +61,10 @@ typedef enum XServOperationCode : NSInteger {
 - (NSString *) subscribeOnTopic:(NSString *) topic withAuthEndpoint:(NSDictionary *) auth_endpoint;
 - (NSString *) subscribeOnTopic:(NSString *) topic;
 - (NSString *) unsubscribeOnTopic:(NSString *) topic;
-- (NSString *) publishString:(NSString *) data onTopic:(NSString *) topic;
-- (NSString *) publishJSON:(NSDictionary *) data onTopic:(NSString *) topic;
-- (NSString *) historyByIdOnTopic:(NSString *) topic withOffset:(int) offset withLimit:(int) limit;
-- (NSString *) historyByIdOnTopic:(NSString *) topic withOffset:(int) offset;
-- (NSString *) historyByTimeStampOnTopic:(NSString *) topic withOffset:(int) offset withLimit:(int) limit;
-- (NSString *) historyByTimeStampOnTopic:(NSString *) topic withOffset:(int) offset;
-- (NSString *) presenceOnTopic:(NSString *) topic;
+- (NSString *) publish:(id) data onTopic:(NSString *) topic;
+- (NSString *) historyOnTopic:(NSString *) topic withOffset:(int) offset withLimit:(int) limit;
+- (NSString *) usersOnTopic:(NSString *) topic;
+- (NSString *) topics;
 
 + (BOOL) isPrivateTopic:(NSString *) topic;
 
