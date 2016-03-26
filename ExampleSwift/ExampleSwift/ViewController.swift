@@ -39,7 +39,7 @@ class ViewController: UIViewController, XservDelegate, UITableViewDelegate, UITa
         self.tableEvents.registerClass(UITableViewCell.self, forCellReuseIdentifier: kCellEvents)
         self.tableOperations.registerClass(UITableViewCell.self, forCellReuseIdentifier: kCellOperations)
         xserv = Xserv(appId: APP_ID)
-        xserv?.delegate = self
+        xserv!.delegate = self
         xserv!.connect()
     }
 
@@ -89,7 +89,10 @@ class ViewController: UIViewController, XservDelegate, UITableViewDelegate, UITa
     
     @IBAction func onTapSubscribe(sender: AnyObject) {
         
-        self.xserv?.subscribeOnTopic(self.textTopic.text)
+       // self.xserv?.subscribeOnTopic(self.textTopic.text)
+        
+        self.xserv!.subscribeOnTopic(self.textTopic.text)
+        
     }
     
     @IBAction func onTapPrivateSubscribe(sender: AnyObject) {

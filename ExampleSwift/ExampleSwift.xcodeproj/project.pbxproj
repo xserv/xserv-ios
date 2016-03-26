@@ -12,18 +12,18 @@
 		EE029E321C557F8C007F25AC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE029E301C557F8C007F25AC /* LaunchScreen.storyboard */; };
 		EE029E6E1C559E76007F25AC /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE029E6D1C559E76007F25AC /* ViewController.swift */; };
 		EE029E701C559FD8007F25AC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE029E6F1C559FD8007F25AC /* Main.storyboard */; };
-		EEAD45671C5D6AF2007C80E7 /* XServ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEAD45661C5D6AF2007C80E7 /* XServ.framework */; };
-		EEAD45691C5D6B33007C80E7 /* XServ.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EEAD45661C5D6AF2007C80E7 /* XServ.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EE17CFA41CA6C01C00641EF4 /* XServ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE17CF9E1CA6BFD100641EF4 /* XServ.framework */; };
+		EE17CFA51CA6C01C00641EF4 /* XServ.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EE17CF9E1CA6BFD100641EF4 /* XServ.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		EEDD19C91C5990CE006F91AE /* Embed Frameworks */ = {
+		EE17CFA61CA6C01C00641EF4 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				EEAD45691C5D6B33007C80E7 /* XServ.framework in Embed Frameworks */,
+				EE17CFA51CA6C01C00641EF4 /* XServ.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -38,7 +38,7 @@
 		EE029E331C557F8C007F25AC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EE029E6D1C559E76007F25AC /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		EE029E6F1C559FD8007F25AC /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		EEAD45661C5D6AF2007C80E7 /* XServ.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XServ.framework; path = ExampleSwift/XServ.framework; sourceTree = "<group>"; };
+		EE17CF9E1CA6BFD100641EF4 /* XServ.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = XServ.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,7 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EEAD45671C5D6AF2007C80E7 /* XServ.framework in Frameworks */,
+				EE17CFA41CA6C01C00641EF4 /* XServ.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,7 +56,6 @@
 		EE029E1B1C557F8C007F25AC = {
 			isa = PBXGroup;
 			children = (
-				EEAD45661C5D6AF2007C80E7 /* XServ.framework */,
 				EE029E261C557F8C007F25AC /* ExampleSwift */,
 				EE029E251C557F8C007F25AC /* Products */,
 			);
@@ -73,6 +72,7 @@
 		EE029E261C557F8C007F25AC /* ExampleSwift */ = {
 			isa = PBXGroup;
 			children = (
+				EE17CF9D1CA6BFD100641EF4 /* Frameworks */,
 				EE029E6F1C559FD8007F25AC /* Main.storyboard */,
 				EE029E6D1C559E76007F25AC /* ViewController.swift */,
 				EE029E271C557F8C007F25AC /* AppDelegate.swift */,
@@ -81,6 +81,14 @@
 				EE029E331C557F8C007F25AC /* Info.plist */,
 			);
 			path = ExampleSwift;
+			sourceTree = "<group>";
+		};
+		EE17CF9D1CA6BFD100641EF4 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EE17CF9E1CA6BFD100641EF4 /* XServ.framework */,
+			);
+			path = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -93,7 +101,7 @@
 				EE029E201C557F8C007F25AC /* Sources */,
 				EE029E211C557F8C007F25AC /* Frameworks */,
 				EE029E221C557F8C007F25AC /* Resources */,
-				EEDD19C91C5990CE006F91AE /* Embed Frameworks */,
+				EE17CFA61CA6C01C00641EF4 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -265,6 +273,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ExampleSwift",
+					"$(PROJECT_DIR)/ExampleSwift/Frameworks",
 				);
 				INFOPLIST_FILE = ExampleSwift/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -287,6 +296,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ExampleSwift",
+					"$(PROJECT_DIR)/ExampleSwift/Frameworks",
 				);
 				INFOPLIST_FILE = ExampleSwift/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;

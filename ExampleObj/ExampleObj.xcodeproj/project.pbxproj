@@ -13,8 +13,8 @@
 		EE029E141C557F32007F25AC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE029E121C557F32007F25AC /* LaunchScreen.storyboard */; };
 		EE029E631C55950F007F25AC /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EE029E621C55950F007F25AC /* Main.storyboard */; };
 		EE029E661C559519007F25AC /* XservViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EE029E651C559519007F25AC /* XservViewController.m */; };
-		EEAD45651C5D6AC8007C80E7 /* XServ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EEAD45641C5D6AC8007C80E7 /* XServ.framework */; };
-		EEAD45681C5D6B28007C80E7 /* XServ.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EEAD45641C5D6AC8007C80E7 /* XServ.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		EE17CFA11CA6BFD700641EF4 /* XServ.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE17CFA01CA6BFD700641EF4 /* XServ.framework */; };
+		EE17CFA31CA6BFE700641EF4 /* XServ.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = EE17CFA01CA6BFD700641EF4 /* XServ.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -24,7 +24,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				EEAD45681C5D6B28007C80E7 /* XServ.framework in Embed Frameworks */,
+				EE17CFA31CA6BFE700641EF4 /* XServ.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -42,7 +42,7 @@
 		EE029E621C55950F007F25AC /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		EE029E641C559519007F25AC /* XservViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XservViewController.h; sourceTree = "<group>"; };
 		EE029E651C559519007F25AC /* XservViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XservViewController.m; sourceTree = "<group>"; };
-		EEAD45641C5D6AC8007C80E7 /* XServ.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XServ.framework; path = ExampleObj/XServ.framework; sourceTree = "<group>"; };
+		EE17CFA01CA6BFD700641EF4 /* XServ.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = XServ.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,7 +50,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EEAD45651C5D6AC8007C80E7 /* XServ.framework in Frameworks */,
+				EE17CFA11CA6BFD700641EF4 /* XServ.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,7 +60,6 @@
 		EE029DF81C557F32007F25AC = {
 			isa = PBXGroup;
 			children = (
-				EEAD45641C5D6AC8007C80E7 /* XServ.framework */,
 				EE029E031C557F32007F25AC /* ExampleObj */,
 				EE029E021C557F32007F25AC /* Products */,
 			);
@@ -102,6 +101,7 @@
 		EEDD19BB1C568D40006F91AE /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				EE17CFA01CA6BFD700641EF4 /* XServ.framework */,
 			);
 			path = Frameworks;
 			sourceTree = "<group>";
@@ -289,6 +289,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ExampleObj",
+					"$(PROJECT_DIR)/ExampleObj/Frameworks",
 				);
 				INFOPLIST_FILE = ExampleObj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -296,7 +297,7 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = it.nugara.ExampleObj;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f4793f70-51c0-4d7a-840a-a70fb282de97";
+				PROVISIONING_PROFILE = "3451ca9d-cbca-40d7-b997-60883771ca1d";
 			};
 			name = Debug;
 		};
@@ -309,6 +310,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ExampleObj",
+					"$(PROJECT_DIR)/ExampleObj/Frameworks",
 				);
 				INFOPLIST_FILE = ExampleObj/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -316,7 +318,7 @@
 				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = it.nugara.ExampleObj;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "f4793f70-51c0-4d7a-840a-a70fb282de97";
+				PROVISIONING_PROFILE = "3451ca9d-cbca-40d7-b997-60883771ca1d";
 			};
 			name = Release;
 		};

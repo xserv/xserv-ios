@@ -1,5 +1,0 @@
-framework module XServ {
-    umbrella header "XServ.h"
-    export *
-    module * { export * }
-}

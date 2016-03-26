@@ -37,7 +37,7 @@ const int DefaultReconnectDelay = 5000;
         self.appId = app_id;
         
         // TLS
-        self.secure = NO; // mettere YES, ho messo no perche non funziona https, wss funziona
+        self.secure = YES; // mettere YES, ho messo no perche non funziona https, wss funziona
     }
     return self;
 }
