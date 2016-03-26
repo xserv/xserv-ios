@@ -62,7 +62,7 @@ class ViewController: UIViewController, XservDelegate, UITableViewDelegate, UITa
         self.tableEvents.reloadData()
     }
     
-    func didReceiveOpsResponse(json: [NSObject : AnyObject]!) {
+    func didReceiveOperations(json: [NSObject : AnyObject]!) {
         print(json)
         
         self.operations.insert(json as! [String : AnyObject], atIndex: 0)
@@ -81,7 +81,10 @@ class ViewController: UIViewController, XservDelegate, UITableViewDelegate, UITa
     
     @IBAction func onTapPublish(sender: AnyObject) {
         
-        self.xserv?.publishString(self.textMessage.text, onTopic: self.textTopic.text)
+      //  self.xserv?.publishString(self.textMessage.text, onTopic: self.textTopic.text)
+        self.xserv?.publish(self.textMessage.text, onTopic: self.textTopic.text)
+        
+       // - (NSString *) publish:(id) data onTopic:(NSString *) topic;
     }
     
     @IBAction func onTapSubscribe(sender: AnyObject) {
@@ -103,7 +106,7 @@ class ViewController: UIViewController, XservDelegate, UITableViewDelegate, UITa
     
     @IBAction func onTapPresence(sender: AnyObject) {
         
-        self.xserv?.presenceOnTopic(self.textTopic.text)
+       self.xserv?.usersOnTopic(self.textTopic.text)
     }
     
     func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
