@@ -6,11 +6,11 @@
 	<dict>
 		<key>Headers/Xserv.h</key>
 		<data>
-		tk//QuzY8YuJV3eit7tPt3JTt80=
+		F/7oRkMW2AQ5n6Z33+Wx96ogijU=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		fUZkljFJ1+B/LIlsF3y4Wwqc7m8=
+		CKAlETEOHXGHA+fuHXQjQqnEtaM=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -20,13 +20,27 @@
 	<key>files2</key>
 	<dict>
 		<key>Headers/Xserv.h</key>
-		<data>
-		tk//QuzY8YuJV3eit7tPt3JTt80=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			F/7oRkMW2AQ5n6Z33+Wx96ogijU=
+			</data>
+			<key>hash2</key>
+			<data>
+			abRe+pc7wB1kx/KGmcvTlmVQ3G2nY4xPgjDgtdfIEGw=
+			</data>
+		</dict>
 		<key>Modules/module.modulemap</key>
-		<data>
-		6FzQGkcEwsVkSR3oX68CHLWavJE=
-		</data>
+		<dict>
+			<key>hash</key>
+			<data>
+			6FzQGkcEwsVkSR3oX68CHLWavJE=
+			</data>
+			<key>hash2</key>
+			<data>
+			4JYupAQ0Rhnolyb2B9KvjHmRNg8te2HvZbTa5fei7Q8=
+			</data>
+		</dict>
 	</dict>
 	<key>rules</key>
 	<dict>
