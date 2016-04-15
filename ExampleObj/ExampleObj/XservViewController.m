@@ -80,17 +80,27 @@ static NSString *kCellOperations = @"CellOperations";
 }
 
 - (IBAction)onTapHistoryByTimeStamo:(id)sender {
-    [self.xserv historyOnTopic:self.textTopic.text withOffset:[self.textOffset.text intValue] withLimit:[self.textLimit.text intValue]];
+    NSDictionary *params = @{
+                             @"offset": [NSNumber numberWithInt:[self.textOffset.text intValue]],
+                             @"limit": [NSNumber numberWithInt:[self.textLimit.text intValue]],
+                             // @"query": @{@"data.n": @{@"$gte": [NSNumber numberWithInt:2]}}
+                             };
+    
+    [self.xserv historyOnTopic:self.textTopic.text withParams:params];
 }
 
 - (IBAction)onTapPrivateSubscribe:(id)sender {
+    NSDictionary *auth = @{
+                           /*@"headers": @{
+                                   
+                           },*/
+                           @"params": @{
+                                   @"user" : self.textUser.text,
+                                   @"pass" : self.textPassword.text
+                           }
+    };
     
-    NSDictionary *autorizationParams = @{
-                                         @"user" : self.textUser.text,
-                                         @"pass" : self.textPassword.text
-                                         };
-    
-    [self.xserv subscribeOnTopic:self.textTopic.text withAuthEndpoint:autorizationParams];
+    [self.xserv subscribeOnTopic:self.textTopic.text withAuth:auth];
 }
 
 - (IBAction)onTapPresence:(id)sender {

@@ -11,7 +11,7 @@
 #import <UIKit/UIKit.h>
 #import "UIDevice-Hardware.h"
 
-NSString *const VERSION = @"1.0.0";
+NSString *const VERSION = @"1";
 
 NSString *const HOST = @"mobile-italia.com";
 NSString *const PORT = @"4332";
@@ -35,9 +35,9 @@ const int DefaultReconnectDelay = 5000;
     self = [super init];
     if (self) {
         self.appId = app_id;
-        
+        self.reconnectInterval = DefaultReconnectDelay;
         // TLS
-        self.secure = YES; // mettere YES, ho messo no perche non funziona https, wss funziona
+        self.secure = YES;
     }
     return self;
 }
@@ -94,16 +94,16 @@ const int DefaultReconnectDelay = 5000;
 
 - (void) reconnect {
     
-    long delay = self.reconnectInterval ? self.reconnectInterval : DefaultReconnectDelay;
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (delay/1000) * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-        [self connect];
-    });
+    if (self.reconnectInterval > 0) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (self.reconnectInterval/1000) * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [self connect];
+        });
+    }
 }
 
 #pragma mark - Operation Method
 
--(NSString *) subscribeOnTopic:(NSString *) topic withAuthEndpoint:(NSDictionary *) auth_endpoint {
+-(NSString *) subscribeOnTopic:(NSString *) topic withAuth:(NSDictionary *) auth {
     
     if(![self isConnected]) return nil;
     
@@ -114,8 +114,8 @@ const int DefaultReconnectDelay = 5000;
     [dict setObject:[NSNumber numberWithInteger:OP_SUBSCRIBE] forKey:@"op"];
     [dict setObject:topic forKey:@"topic"];
     
-    if(auth_endpoint) {
-        [dict setObject:auth_endpoint forKey:@"auth_endpoint"];
+    if(auth) {
+        [dict setObject:auth forKey:@"auth"];
     }
     
     [self send:dict];
@@ -125,7 +125,7 @@ const int DefaultReconnectDelay = 5000;
 
 - (NSString *) subscribeOnTopic:(NSString *) topic {
     
-    return [self subscribeOnTopic:topic withAuthEndpoint:nil];
+    return [self subscribeOnTopic:topic withAuth:nil];
 }
 
 - (NSString *) unsubscribeOnTopic:(NSString *) topic {
@@ -144,18 +144,23 @@ const int DefaultReconnectDelay = 5000;
     return UUID;
 }
 
-- (NSString *) historyOnTopic:(NSString *) topic withOffset:(int) offset withLimit:(int) limit {
+- (NSString *) historyOnTopic:(NSString *) topic withParams:(NSDictionary *) params {
     
     if(![self isConnected]) return nil;
     
     NSString *UUID = [[NSUUID UUID] UUIDString];
     
+    NSNumber *offset = (params && params[@"offset"]) ? params[@"offset"] : [NSNumber numberWithInt:0];
+    NSNumber *limit =  (params && params[@"limit"]) ? params[@"limit"] : [NSNumber numberWithInt:0];
+    NSDictionary *query =  (params && params[@"query"]) ? params[@"query"] : nil;
+    
     NSDictionary *dict = @{
                            @"uuid" : UUID,
                            @"op" : [NSNumber numberWithInteger:OP_HISTORY],
                            @"topic" : topic,
-                           @"arg1" : [NSString stringWithFormat:@"%i", offset],
-                           @"arg2" : [NSString stringWithFormat:@"%i", limit]
+                           @"arg1" : [offset stringValue],
+                           @"arg2" : [limit stringValue],
+                           @"arg3" : query ? query : @""
                            };
     [self send:dict];
     
@@ -173,6 +178,24 @@ const int DefaultReconnectDelay = 5000;
                            @"op" : [NSNumber numberWithInteger:OP_PUBLISH],
                            @"topic" : topic,
                            @"arg1" : data
+                           };
+    [self send:dict];
+    
+    return UUID;
+}
+
+- (NSString *) update:(id) data withObjectId:(NSString *) object_id onTopic:(NSString *) topic {
+    
+    if(![self isConnected]) return nil;
+    
+    NSString *UUID = [[NSUUID UUID] UUIDString];
+    
+    NSDictionary *dict = @{
+                           @"uuid" : UUID,
+                           @"op" : [NSNumber numberWithInteger:OP_UPDATE],
+                           @"topic" : topic,
+                           @"arg1" : data,
+                           @"arg2" : object_id
                            };
     [self send:dict];
     
@@ -330,32 +353,72 @@ const int DefaultReconnectDelay = 5000;
     }
 }
 
+- (NSString*) urlEncodedDictionary:(NSDictionary *) params {
+    NSMutableArray *parts = [NSMutableArray array];
+    for (NSString *key in params) {
+        // string format to transform int or other object in string
+        NSString *value = [NSString stringWithFormat:@"%@", [params objectForKey:key]];
+        NSString *part = [NSString stringWithFormat: @"%@=%@",
+                          [key stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]],
+                          [value stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]]];
+        [parts addObject: part];
+    }
+    return [parts componentsJoinedByString: @"&"];
+}
+
 - (void) send:(NSDictionary *) dictionary {
     
     if(![self isConnected]) return;
     
-    if([dictionary[@"op"] intValue] == OP_SUBSCRIBE && dictionary[@"auth_endpoint"] && [Xserv isPrivateTopic:dictionary[@"topic"]])
+    if([dictionary[@"op"] intValue] == OP_SUBSCRIBE && dictionary[@"auth"] && [Xserv isPrivateTopic:dictionary[@"topic"]])
     {
-        NSDictionary *params = @{
-                                 @"socket_id": [self socketId],
-                                 @"topic": dictionary[@"topic"],
-                                 @"user": dictionary[@"auth_endpoint"][@"user"],
-                                 @"pass": dictionary[@"auth_endpoint"][@"pass"]
-                                 };
         NSString *urlString;
-        
-        if(dictionary[@"auth_endpoint"][@"endpoint"]) {
-            urlString = dictionary[@"auth_endpoint"][@"endpoint"];
+        if(dictionary[@"auth"][@"endpoint"]) {
+            urlString = dictionary[@"auth"][@"endpoint"];
         }
         else {
-            urlString = [NSString stringWithFormat:@"http%@://%@:%@/app/%@/auth_user", self.secure ? @"s" : @"", HOST, self.secure ? TLS_PORT : PORT, self.appId];
+            urlString = [NSString stringWithFormat:@"http%@://%@:%@/1/user", self.secure ? @"s" : @"", HOST, self.secure ? TLS_PORT : PORT];
+        }
+        
+        NSString *user = @"";
+        NSString *pass = @"";
+        
+        // params
+        if (dictionary[@"auth"][@"params"]) {
+            NSMutableDictionary *params = [NSMutableDictionary dictionaryWithDictionary:dictionary[@"auth"][@"params"]];
+            
+            if (params[@"user"]) {
+                user = params[@"user"];
+                [params removeObjectForKey:@"user"];
+            }
+            if (params[@"pass"]) {
+                pass = params[@"pass"];
+                [params removeObjectForKey:@"pass"];
+            }
+            
+            [params setValue:[self socketId] forKey:@"socket_id"];
+            [params setValue:dictionary[@"topic"] forKey:@"topic"];
+            
+            urlString = [NSString stringWithFormat:@"%@?%@", urlString, [self urlEncodedDictionary:params]];
         }
         
         NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:urlString]];
-        [request addValue:@"application/json; charset=utf-8" forHTTPHeaderField:@"Content-Type"];
-        [request setHTTPMethod:@"POST"];
-        NSData *postData = [NSJSONSerialization dataWithJSONObject:params options:0 error:nil];
-        [request setHTTPBody:postData];
+        [request setHTTPMethod:@"GET"];
+        
+        // headers
+        if(dictionary[@"auth"][@"headers"]) {
+            for (NSString* key in dictionary[@"auth"][@"headers"]) {
+                NSString *value = [dictionary[@"auth"][@"headers"] objectForKey:key];
+                [request setValue:value forHTTPHeaderField:key];
+            }
+        }
+        [request addValue:self.appId forHTTPHeaderField:@"X-Xserv-AppId"];
+        
+        if ([user length] > 0 && [pass length] > 0) {
+            NSData *authData = [[NSString stringWithFormat:@"%@:%@", user, pass] dataUsingEncoding:NSUTF8StringEncoding];
+            NSString *authValue = [NSString stringWithFormat:@"Basic %@", [authData base64Encoding]];
+            [request setValue:authValue forHTTPHeaderField:@"Authorization"];
+        }
         
         NSURLSession *session = [NSURLSession sharedSession];
         [[session dataTaskWithRequest:request
@@ -369,17 +432,16 @@ const int DefaultReconnectDelay = 5000;
                         if(error2 == nil && json != nil) {
                             
                             NSMutableDictionary *newJson = [NSMutableDictionary dictionaryWithDictionary:dictionary];
-                            [newJson removeObjectForKey:@"auth_endpoint"];
+                            [newJson removeObjectForKey:@"auth"];
                             
                             if(json) {
-                                [newJson setObject:params[@"user"] forKey:@"arg1"];
+                                [newJson setObject:user forKey:@"arg1"];
                                 [newJson setObject:json[@"data"] forKey:@"arg2"];
                                 [newJson setObject:json[@"sign"] forKey:@"arg3"];
                             }
                             
                             NSString *s = [self jsonStringWithDict:newJson];
                             [self.webSocket send:s];
-                            
                         } else {
                             
                             NSString *s = [self jsonStringWithDict:dictionary];
@@ -389,6 +451,7 @@ const int DefaultReconnectDelay = 5000;
                     }] resume];
     }
     else {
+        
         NSString *s = [self jsonStringWithDict:dictionary];
         [self.webSocket send:s];
     }
@@ -446,6 +509,9 @@ const int DefaultReconnectDelay = 5000;
             break;
         case OP_TOPICS:
             stringCode = @"topics";
+            break;
+        case OP_UPDATE:
+            stringCode = @"update";
             break;
         default:
             break;

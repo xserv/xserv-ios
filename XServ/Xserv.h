@@ -20,7 +20,7 @@ typedef enum XservResultCode : NSInteger {
     RC_NO_DATA = -5,
     RC_NOT_PRIVATE = -6,
     RC_LIMIT_MESSAGES = -7,
-    RC_DATA_ERROR = -8
+    RC_DB_ERROR = -8
 } XservResultCode;
 
 typedef enum XServOperationCode : NSInteger {
@@ -31,6 +31,7 @@ typedef enum XServOperationCode : NSInteger {
     OP_HISTORY = 203,
     OP_USERS = 204,
     OP_TOPICS = 205,
+    OP_UPDATE = 300,
     OP_JOIN = 401,
     OP_LEAVE = 402
 } XServOperationCode;
@@ -59,11 +60,12 @@ typedef enum XServOperationCode : NSInteger {
 - (BOOL) isConnected;
 - (NSString *) socketId;
 - (void) disableTLS;
-- (NSString *) subscribeOnTopic:(NSString *) topic withAuthEndpoint:(NSDictionary *) auth_endpoint;
+- (NSString *) subscribeOnTopic:(NSString *) topic withAuth:(NSDictionary *) auth;
 - (NSString *) subscribeOnTopic:(NSString *) topic;
 - (NSString *) unsubscribeOnTopic:(NSString *) topic;
 - (NSString *) publish:(id) data onTopic:(NSString *) topic;
-- (NSString *) historyOnTopic:(NSString *) topic withOffset:(int) offset withLimit:(int) limit;
+- (NSString *) update:(id) data withObjectId:(NSString *) object_id onTopic:(NSString *) topic;
+- (NSString *) historyOnTopic:(NSString *) topic withParams:(NSDictionary *) params;
 - (NSString *) usersOnTopic:(NSString *) topic;
 - (NSString *) topics;
 
