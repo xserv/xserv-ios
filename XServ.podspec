@@ -33,5 +33,5 @@ Pod::Spec.new do |s|
   s.public_header_files = 'XServ/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
   s.frameworks = 'UIKit'
-  s.dependency "SocketRocket", "~> 0.4.2"
+  s.dependency "SocketRocket"
 end
